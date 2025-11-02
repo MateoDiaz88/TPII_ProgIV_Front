@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --rosa-principal: #EC4899;
+  --rosa-hover: #DB2777;
+  --rosa-hover-secundario: #BE185D;
+  --amarillo-acento: #FACC15;
+  --amarillo-claro: #FDE047;
+  --negro: #000000;
+  --gris-oscuro: #111827;
+  --gris-medio: #9CA3AF;
+  --gris-claro: #D1D5DB;
+  --blanco: #FFFFFF;
+}
+
+

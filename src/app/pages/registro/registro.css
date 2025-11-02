@@ -1,0 +1,74 @@
+.register-container{
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    
+}
+
+
+.tarjeta-form{
+    position: relative;
+    border-radius: 20px;
+    background-color: var(--gris-oscuro);
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.tarjeta-form h3{
+    color: white;
+}
+
+.form-control{
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--gris-claro);
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control::placeholder{
+    color: var(--gris-claro);
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus::placeholder{
+    color: var(--rosa-principal);
+}
+.form-control:focus{
+    border-color: var(--rosa-principal);
+    box-shadow: none;
+}
+#campo-descripcion{
+    border: 1px solid var(--gris-claro);
+}
+.btn-register{
+    background-color: var(--rosa-principal);
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+.btn-register:active{
+    transform: scale(1.1);
+    background-color: var(--rosa-principal);
+}
+
+
+.link-login{
+    color: var(--rosa-principal);
+    text-decoration: none;
+}
+
+.custom-file-upload{
+    background-color: var(--rosa-principal);
+    border: none;
+}
+
+.btn-salir{
+    background-color: #ffcc00;
+    border: none;
+}
+
+.link-home{
+    color: white;
+    text-decoration: none; 
+}

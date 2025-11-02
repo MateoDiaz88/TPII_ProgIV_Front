@@ -1,0 +1,40 @@
+nav {
+    background-color: #000000;
+    border-bottom: 4px solid #374151;
+    font-family: "Poppins", sans-serif;
+}
+
+.titulo {
+    color: var(--blanco);
+}
+
+.titulo h2{
+    margin-bottom: 0;
+}
+
+.titulo span{
+    color: var(--rosa-principal);
+}
+.logo{
+    width: 60px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.retro-nav,
+.nav-link {
+    color: #ffffff;
+    font-weight: 600;
+    
+}   
+
+.logout-link{
+    cursor: pointer;
+}
+
+.link-perfil {
+    background-color: #EC4899;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+

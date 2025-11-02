@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg retro-nav">
+  <div class="container-fluid">
+    <!-- Logo / Título -->
+    <div class="logo-titulo d-flex align-items-center">
+      <a class="navbar-brand m-0 p-0">
+        <img src="assets/favicon/logo-blanco.png" class="logo">
+      </a>
+      <a class="navbar-brand retro-font titulo" routerLink="/publicaciones">
+        <h2>Connex<span>.</span>
+        </h2>
+      </a>
+    </div>
+    <!-- Botón para vista mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        @if(!isLogged()){
+        <li class="nav-item">
+          <a class="nav-link retro-font" routerLink="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link retro-font" routerLink="/registro">Registro</a>
+        </li>
+        }
+
+        @if(isLogged()){
+        <li class="nav-item">
+          <a class="nav-link retro-font logout-link" (click)="logOut()">Cerrar Sesión</a>
+        </li>
+        }
+
+        <li class="nav-item">
+          <a class="nav-link retro-font" routerLink="/publicaciones">Publicaciones</a>
+        </li>
+        <li class="nav-item link-perfil">
+          <a class="nav-link retro-font " routerLink="/mi-perfil">MiPerfil</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

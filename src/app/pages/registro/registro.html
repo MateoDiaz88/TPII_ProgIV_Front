@@ -1,0 +1,134 @@
+<div class="register-container d-flex justify-content-center align-items-center">
+    <app-video-fondo></app-video-fondo>
+    <div class="container form-container d-flex justify-content-center">
+        <div class="card shadow-lg p-4 tarjeta-form" style="max-width: 700px; width: 100%;">
+            <h3 class="card-title text-center mb-4">Registro de Usuario</h3>
+
+            <form [formGroup]="registerForm">
+                <div class="row">
+                    <!-- Nombre -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Nombre</label>
+                        <input type="text" formControlName="name" class="form-control" placeholder="Nombre">
+                        @if(registerForm.get('name')?.touched && registerForm.get('name')?.invalid){
+                        <div class="text-danger small mt-1">
+                            El nombre debe tener al menos 4 caracteres.
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Apellido</label>
+                        <input type="text" formControlName="surname" class="form-control" placeholder="Apellido">
+                        @if(registerForm.get('surname')?.touched && registerForm.get('surname')?.invalid){
+                        <div class="text-danger small mt-1">
+                            El apellido debe tener al menos 4 caracteres.
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Email</label>
+                        <input type="email" formControlName="email" class="form-control"
+                            placeholder="ejemplo@correo.com">
+                        @if(registerForm.get('email')?.touched && registerForm.get('email')?.invalid){
+                        <div class="text-danger small mt-1">
+                            Ingresa un email válido.
+                        </div>
+                        }
+                    </div>
+
+                    <!--Username-->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Username</label>
+                        <input type="text" formControlName="username" class="form-control" placeholder="Username">
+                        @if(registerForm.get('username')?.touched && registerForm.get('username')?.invalid){
+                        <div class="text-danger small mt-1">
+                            El username debe tener al menos 8 caracteres y contener una letra mayúscula y un número.
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Password -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Contraseña</label>
+                        <input type="password" formControlName="password" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
+                        @if(registerForm.get('password')?.touched && registerForm.get('password')?.invalid){
+                        <div class="text-danger small mt-1">
+                            La contraseña debe tener al menos 6 caracteres.
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Confirmar Password -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Confirmar Contraseña</label>
+                        <input type="password" formControlName="repetirPassword" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
+                        @if(registerForm.get('repetirPassword')?.touched &&
+                        registerForm.get('repetirPassword')?.invalid){
+                        @if(registerForm.get('repetirPassword')?.hasError('required')){
+                        <div class="text-danger small">Debe repetir la contraseña.</div>
+                        }
+                        @if(registerForm.get('repetirPassword')?.hasError('passwordMismatch')){
+                        <div class="text-danger small">Las contraseñas no coinciden.</div>
+                        }
+                        }
+                    </div>
+
+                    <!-- Fecha de nacimiento -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Fecha de nacimiento</label>
+                        <input type="date" formControlName="fechaNacimiento" class="form-control">
+
+                    </div>
+
+                    <!--Descripcio-->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Descripción</label>
+                        <textarea formControlName="descripcion" rows="4" class="form-control" id="campo-descripcion"
+                            placeholder="Descripción"></textarea>
+                        @if(registerForm.get('descripcion')?.touched && registerForm.get('descripcion')?.invalid){
+                        <div class="text-danger small mt-1">
+                            La descripción debe tener como maximo 500 caracteres.
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Foto de perfil -->
+                    <div class="col-12 mb-3">
+                        <input type="file" id="fileInput" hidden (change)="onFileSelected($event)">
+                        <label for="fileInput" class="custom-file-upload btn  btn-primary">Subir archivo</label>
+                        @if(!selectedFile){
+                        <div class="text-danger small mt-1">
+                            La foto de perfil es obligatoria.
+                        </div>
+                        }
+                        @if(selectedFile){
+                        <div class="text small mt-1">
+                            Archivo seleccionado: {{selectedFile.name}}
+                        </div>
+                        }
+                    </div>
+                    <!-- Botón -->
+                    <div class="col-12 d-grid mt-3">
+                        <button type="button" [disabled]="registerForm.invalid"
+                            class="btn btn-primary btn-lg shadow-sm btn-register" appDebounceClick [debounceTime]="3000"
+                            (appDebounceClick)="register()">
+                            <i class="fas fa-user-plus me-2"></i> Registrarse
+                        </button>
+                    </div>
+
+
+                    <!-- Link login -->
+                    <div class="col-12 text-center mt-2">
+                        <small>¿Ya tienes cuenta? <a routerLink="/login" class="link-login">Iniciar sesión</a></small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
