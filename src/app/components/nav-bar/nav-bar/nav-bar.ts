@@ -1,7 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../../../services/auth-service/auth-service';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService, User } from '../../../services/auth-service/auth-service';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,11 +12,9 @@ import Swal from 'sweetalert2';
 })
 export class NavBar {
   private auth = inject(AuthService);
+  private router = inject(Router)
 
-  // La señal del usuario
   currentUser = this.auth.currentUser;
-
-  // Señal derivada: true si hay usuario, false si no
   isLogged = computed(() => !!this.currentUser());
 
   logOut() {
@@ -31,6 +30,8 @@ export class NavBar {
       width: '400px',
       padding: '2em',
       grow: 'row'
-    })
+    });
+
+    this.router.navigate(['/login']);
   }
 }

@@ -1,0 +1,39 @@
+<div class="publicacion-container container">
+    <div class="informacion-container">
+        <div class="user-cont">
+            <h3>{{publicacion.user.name}}</h3>
+        </div>
+        <div class="date-cont">
+            <h3>{{publicacion.fechaPublicacion | timeAgo}}</h3>
+        </div>
+    </div>
+    <div class="content-cont">
+        <p>{{publicacion.contenido}}</p>
+    </div>
+    <div class="img-cont">
+        <img [src]="publicacion.imagen" alt="imagen-publicacion">
+    </div>
+    <div class="footer-publicacion">
+        <div class="likes-cont">
+
+            <button (click)="toggleLike(publicacion)">
+                <i class="fas fa-heart"
+                    [ngClass]="{'text-red-500': hasLiked(publicacion), 'text-white': !hasLiked(publicacion)}"></i>
+            </button>
+            <span>{{publicacion.likes.length}} Me gusta</span>
+        </div>
+        <div class="comments-cont">
+            <button class="comments-toggle btn shadow-lg" (click)="toggleComments()">
+                <img [src]="commentsVisible() ? 'assets/img/dialogo-relleno.png' : 'assets/img/dialogo-no-relleno.png'" alt="">
+            </button>
+        </div>
+        @if(this.commentsVisible()){
+        <div class="comments-cont">
+            <h3>{{publicacion.comentarios}} Comentarios</h3>
+        </div>
+        }
+
+    </div>
+
+
+</div>

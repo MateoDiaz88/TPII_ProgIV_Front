@@ -56,9 +56,9 @@
     transition: all 0.2s ease-in-out;    
 }
 
-.btn-register:active{
+.btn-login:active{
     transform: scale(1.1);
-    background-color: var(--rosa-principal);
+    background-color: var(--rosa-hover);
 }
 
 

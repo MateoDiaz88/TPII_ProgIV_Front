@@ -29,7 +29,7 @@ export class Registro {
     name: ['', [Validators.required, Validators.minLength(4)]],
     surname: ['', [Validators.required, Validators.minLength(4)]],
     email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+    username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?!.*@).{8,}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     repetirPassword: ['', [Validators.required]],
     fechaNacimiento: ['', [Validators.required]],
@@ -62,7 +62,11 @@ export class Registro {
           icon: 'error',
           title: 'Tipo de archivo inválido',
           text: 'Solo se permiten imágenes (JPG, PNG)',
-          confirmButtonColor: '#d33'
+          confirmButtonColor: '#d33',
+          background: "#111827",
+          color: "white",
+          width: '400px',
+          padding: '2em'
         });
         input.value = ''; // Limpiar el input
         return;
@@ -73,7 +77,11 @@ export class Registro {
           icon: 'error',
           title: 'Archivo muy grande',
           text: 'La imagen debe pesar menos de 5MB',
-          confirmButtonColor: '#d33'
+          confirmButtonColor: '#d33',
+          background: "#111827",
+          color: "white",
+          width: '400px',
+          padding: '2em'
         });
         input.value = ''; // Limpiar el input
         return;
@@ -100,7 +108,11 @@ export class Registro {
         icon: 'error',
         title: 'Campos inválidos',
         text: 'Por favor completa correctamente todos los campos.',
-        confirmButtonColor: '#d33'
+        confirmButtonColor: '#d33',
+        background: "#111827",
+        color: "white",
+        width: '400px',
+        padding: '2em'
       });
       return;
     }
@@ -127,6 +139,10 @@ export class Registro {
         title: 'Registro exitoso',
         text: 'El usuario se ha registrado correctamente.',
         confirmButtonColor: '#3085d6',
+        background: "#111827",
+        color: "white",
+        width: '400px',
+        padding: '2em'
       });
       this.router.navigate(['/publicaciones']);
 
@@ -138,7 +154,11 @@ export class Registro {
         icon: 'error',
         title: 'Error en el registro',
         text: 'Ha ocurrido un error en el registro.',
-        confirmButtonColor: '#d33'
+        confirmButtonColor: '#d33',
+        background: "#111827",
+        color: "white",
+        width: '400px',
+        padding: '2em'
       })
     }
   }

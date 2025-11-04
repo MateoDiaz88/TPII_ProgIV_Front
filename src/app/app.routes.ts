@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth-guard/auth-guard';
-import { ConfirmExitGuard } from './guards/confirm-exit/confirm-exit-guard';
 
 export const routes: Routes = [
     {
@@ -14,10 +13,9 @@ export const routes: Routes = [
     },
     {
         path: 'publicaciones',
-        loadComponent: () => import('./pages/publicaciones/publicaciones').then(m => m.Publicaciones),
-        canActivate: [AuthGuard]
+        loadComponent: () => import("./pages/publicaciones/publicaciones").then(m => m.Publicaciones),
+        
     },
-    
     {
         path: 'mi-perfil',
         loadComponent: () => import('./pages/mi-perfil/mi-perfil').then(m => m.MiPerfil),
@@ -25,7 +23,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        loadComponent: () => import('./pages/login/login').then(m => m.Login)
+        loadComponent: () => import('./pages/publicaciones/publicaciones').then(m => m.Publicaciones),
     }
 
 ];

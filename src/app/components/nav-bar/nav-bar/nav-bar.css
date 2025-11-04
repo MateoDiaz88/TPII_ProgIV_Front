@@ -1,40 +1,61 @@
 nav {
-    background-color: #000000;
-    border-bottom: 4px solid #374151;
-    font-family: "Poppins", sans-serif;
+  background-color: #000000;
+  border-bottom: 4px solid #374151;
+  font-family: "Poppins", sans-serif;
 }
 
 .titulo {
-    color: var(--blanco);
+  color: var(--blanco);
 }
 
-.titulo h2{
-    margin-bottom: 0;
+.titulo h2 {
+  margin-bottom: 0;
 }
 
-.titulo span{
-    color: var(--rosa-principal);
+.titulo span {
+  color: var(--rosa-principal);
 }
-.logo{
-    width: 60px;
-    height: auto;
-    margin-right: 10px;
+
+.logo {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
 }
 
 .retro-nav,
 .nav-link {
-    color: #ffffff;
-    font-weight: 600;
-    
-}   
-
-.logout-link{
-    cursor: pointer;
+  margin-right: 20px;
+  color: #ffffff;
+  font-weight: 600;
 }
 
-.link-perfil {
-    background-color: #EC4899;
-    border-radius: 10px;
-    padding: 5px 10px;
+.logout-link {
+  cursor: pointer;
 }
 
+
+
+.navbar .nav-link {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 0%;
+  height: 2px;
+  background-color: var(--rosa-principal);
+  transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::after {
+  width: 100%;
+}
+
+.navbar .nav-link:hover {
+  color: var(--rosa-principal);
+}

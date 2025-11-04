@@ -25,14 +25,11 @@
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "server": "src/main.server.ts"
           },
           "configurations": {
             "production": {
+              
               "budgets": [
                 {
                   "type": "initial",
@@ -45,7 +42,11 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [{
+                "replace": "src/enviroments/enviroment.ts",
+                "with": "src/enviroments/enviroment.prod.ts"
+              }]
             },
             "development": {
               "optimization": false,

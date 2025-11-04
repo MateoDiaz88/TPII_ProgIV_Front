@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { first, firstValueFrom } from 'rxjs';
+import { environment } from '../../../enviroments/enviroment';
 
 export interface UploadResponse{
   message: string,
@@ -13,7 +14,7 @@ export interface UploadResponse{
 })
 export class UploadService {
   private http = inject(HttpClient);
-  private apiUrl = "http://localhost:3000/upload";
+  private apiUrl = environment.apiUrlUpload;
   
   async uploadProfileImage(file:File): Promise<UploadResponse>{
     const formData = new FormData();

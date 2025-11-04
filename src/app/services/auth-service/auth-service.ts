@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, tap } from 'rxjs';
 import Swal from 'sweetalert2';
-
+import { error } from 'node:console';
+import { environment } from '../../../enviroments/enviroment';
 export interface RegisterData {
   name: string,
   surname: string,
@@ -16,7 +17,7 @@ export interface RegisterData {
 }
 
 export interface User {
-  _id: String,
+  _id: string,
   name: string,
   surname: string,
   email: string;
@@ -33,11 +34,15 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrlLogin = 'http://localhost:3000/autenticacion';
-  apiUrlRegister = "http://localhost:3000/usuarios";
+  apiUrlLogin = environment.apiUrlLogin;
+  apiUrlRegister = environment.apiUrlRegister;
 
-  currentUser = signal<User | null>(null);
-  constructor(private http: HttpClient) { }
+  currentUser = signal<any | null>(null);
+
+  constructor(private http: HttpClient) {
+
+    this.validateSession().subscribe();
+  }
 
 
   async register(userData: RegisterData): Promise<User> {
@@ -50,15 +55,16 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string) {
+  async login(login: string, password: string) {
     try {
       const result = await firstValueFrom(
-        this.http.post<{ user: User }>(`${this.apiUrlLogin}/login`, { email, password }, { withCredentials: true })
+        this.http.post<{ user: User }>(`${this.apiUrlLogin}/login`, { login, password }, { withCredentials: true })
       );
 
 
       if (result) {
-        this.currentUser.set(result.user); // Actualiza la signal
+
+        this.currentUser.set(result.user); // Actualizamos el currentUserSubject
         Swal.fire({
           icon: 'success',
           title: `¡Bienvenido ${result.user.name}!`,
@@ -70,17 +76,48 @@ export class AuthService {
 
       }
 
-    } catch (error) {
+    } catch (error: any) {
       this.currentUser.set(null);
       console.error(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Credenciales inválidas',
-        confirmButtonColor: '#d33',
-        background: "#111827",
-        color: "white"
-      })
+      switch (error.status) {
+        case 429:
+          Swal.fire({
+            icon: 'warning',
+            title: 'Error',
+            text: 'Demasiados intentos de inicio de sesión. Por favor, intenta nuevamente en 5 minutos.',
+            confirmButtonColor: '#d33',
+            background: "#111827",
+            color: "white",
+            width: '400px',
+            padding: '2em'
+          })
+          break;
+        case 401:
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Credenciales inválidas',
+            confirmButtonColor: '#d33',
+            background: "#111827",
+            color: "white",
+            width: '400px',
+            padding: '2em'
+          })
+          break;
+        default:
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al iniciar sesión',
+            confirmButtonColor: '#d33',
+            background: "#111827",
+            color: "white",
+            width: '400px',
+            padding: '2em'
+          })
+          break;
+
+      }
       throw error;
     }
   }
@@ -97,27 +134,38 @@ export class AuthService {
   }
 
   // Check perfil (por ejemplo al cargar la app)
-  async loadProfile() {
-    try {
-      const user = await firstValueFrom(
-        this.http.get<User>(`${this.apiUrlLogin}/profile`, { withCredentials: true })
-      );
-      this.currentUser.set(user);
-    } catch (error: any) {
-      
-      if (error.statusCode !== 401) {
-        console.error('Error al cargar perfil:', error);
-      }
-      this.currentUser.set(null);
-    }
+  loadProfile() {
+    this.http.get<User>(`${this.apiUrlLogin}/profile`, {
+      withCredentials: true
+    }).pipe(
+      catchError(err => {
+        console.error(err);
+        return of(null);
+      })
+    )
+      .subscribe(user => {
+        this.currentUser.set(user);
+      });
   }
 
-  isAuthenticated(): boolean {
-    if (this.currentUser()) {
-      return true;
-    } else {
-      return false;
-    }
+  validateSession() {
+      return this.http
+        .get<{ message: string; user: any }>(`${this.apiUrlLogin}/validate`, {
+          withCredentials: true,
+        })
+        .pipe(
+          tap(res => this.currentUser.set(res.user ?? null)),
+          // Y devolvemos true/false para que el guard lo use
+          map(res => !!res.user),
+          catchError(() => {
+            this.currentUser.set(null);
+            return of(false);
+          })
+        );
+    
   }
+
+
+
 
 }

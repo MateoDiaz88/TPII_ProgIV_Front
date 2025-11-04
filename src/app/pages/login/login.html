@@ -4,16 +4,16 @@
     <div class="card shadow-lg p-4 tarjeta-form" style="max-width: 500px; width: 100%;">
       <h3 class="card-title text-center mb-4 ">Iniciar Sesión</h3>
 
-      <form [formGroup]="loginForm"  class="row g-3 form-login">
+      <form [formGroup]="loginForm" class="row g-3 form-login">
 
         <div class="col-12">
-          <label for="email" class="form-label fw-semibold text-secondary">Email</label>
-          <input id="email" type="email" formControlName="email" class="form-control" placeholder="ejemplo@correo.com">
-          @if(loginForm.get('email')?.touched && loginForm.get('email')?.invalid){
-          @if(loginForm.get('email')?.hasError('required')){
+          <label for="login" class="form-label fw-semibold text-secondary">Email o Usuario</label>
+          <input id="login" type="text" formControlName="identify" class="form-control" placeholder="Email o Usuario">
+          @if(loginForm.get('identify')?.touched && loginForm.get('identify')?.invalid){
+          @if(loginForm.get('identify')?.hasError('required')){
           <div class="text-danger small">El email es obligatorio.</div>
           }
-          @if(loginForm.get('email')?.hasError('email')){
+          @if(loginForm.get('identify')?.hasError('identify')){
           <div class="text-danger small">Debe ingresar un email válido.</div>
           }
           }
@@ -33,14 +33,15 @@
         </div>
 
         <div class="col-12  mt-3 boton-login-container">
-          <button type="button" class="btn btn-primary btn-lg shadow-sm btn-login" [disabled]="loginForm.invalid" appDebounceClick [debounceTime]="3000" (appDebounceClick)="login()">
+          <button type="button" class="btn btn-primary btn-lg shadow-sm btn-login boton-press"
+            [disabled]="loginForm.invalid" appDebounceClick [debounceTime]="3000" (appDebounceClick)="login()">
             <i class="fas fa-user-plus me-2"></i> Iniciar Sesión
           </button>
         </div>
       </form>
     </div>
 
-    
+
   </div>
 
 </div>

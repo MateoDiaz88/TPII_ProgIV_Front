@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { VideoFondo } from '../../components/video-fondo/video-fondo';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [],
+  imports: [VideoFondo],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
