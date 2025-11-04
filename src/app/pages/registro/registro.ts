@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth-service/auth-service';
@@ -32,11 +32,27 @@ export class Registro {
     username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?!.*@).{8,}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     repetirPassword: ['', [Validators.required]],
-    fechaNacimiento: ['', [Validators.required]],
+    fechaNacimiento: ['', [Validators.required, this.minimunAgeValidator(16)]],
     descripcion: ['', [Validators.required, Validators.maxLength(500)]],
   }, {
     validators: this.passwordMatchValidator // Estoy añadiendo un validator personalizado(en este caso para verificar que los inputs de las contraseñas coincidam)
   });
+
+  minimunAgeValidator(minAge: number): ValidatorFn { // Retorna una funcion que angular llama automaticamente para validar el input de la fecha de nacimiento
+    return (control: AbstractControl): ValidationErrors | null => {
+      const fecha = new Date(control.value);
+      if(!control.value) return null;
+
+      const today = new Date(); // Obtenemos la fecha actual
+      let age = today.getFullYear() - fecha.getFullYear(); // Obtenemos la diferencia de años
+      const monthDiff = today.getMonth() - fecha.getMonth(); // Obtenemos la diferencia de meses
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < fecha.getDate())) {
+      age--;
+      } 
+
+      return age >= minAge ? null : {minimumAge: {requiredAge: minAge, actualAge: age}};
+    }
+  }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;

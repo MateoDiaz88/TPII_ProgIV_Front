@@ -3,6 +3,9 @@ nav {
   border-bottom: 4px solid #374151;
   font-family: "Poppins", sans-serif;
 }
+#nav-cont{
+  margin: 0;
+}
 
 .titulo {
   color: var(--blanco);
