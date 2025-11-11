@@ -1,0 +1,36 @@
+<div class="comentarios-cont mb-3">
+    <div class="comentarios-list d-flex flex-column" style="max-height: 300px; overflow: auto;">
+        @for(comentario of comentarios; track comentario){
+            <div class="comentario-cont m-3 p-2">
+                <div class="user-cont d-flex align-items-center gap-2 ">
+                    <img [src]="comentario.autor.imagenPerfil" 
+                         alt="Avatar" 
+                         class="rounded-circle user-avatar"
+                         style="width: 30px; height: 30px; object-fit: cover;">
+                    <p class="mb-0 fw-semibold user-name" style="color: var(--gris-medio);">{{comentario.autor.name}}</p>
+                </div>
+                <div class="content-cont">
+                    <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">{{comentario.contenido}}</p>
+                </div>
+                <div class="date-cont">
+                    <small class="post-date text-secondary">{{comentario.fechaPublicacion | timeAgo}}</small>
+                </div>
+            </div>   
+        }
+        @if(comentarios.length == 0){
+            <div class="comentario-cont m-3 p-2">
+                <div class="content-cont">
+                    <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">No hay comentarios.</p>
+                </div>
+            </div>   
+        }
+
+    </div>
+
+    <div class="input-comentario d-flex gap-2 p-3 justify-content-center">
+        <input [(ngModel)]="nuevoMensaje" class="form-control" type="text" placeholder="Escribe un comentario..." (keyup.enter)="agregarComentario()">
+        <button class="btn-enviar btn interaction-btn rounded-pill" (click)="agregarComentario()">
+            <img src="assets/img/enviar.png" alt="" style="width: 30px; height: 30px;">
+        </button>
+    </div>
+</div>

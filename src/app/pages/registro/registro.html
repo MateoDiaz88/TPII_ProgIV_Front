@@ -1,6 +1,6 @@
 <div class="register-container d-flex justify-content-center align-items-center">
     <app-video-fondo></app-video-fondo>
-    <div class="container form-container d-flex justify-content-center">
+    <div class="container form-container d-flex justify-content-center animation">
         <div class="card shadow-lg p-4 tarjeta-form" style="max-width: 700px; width: 100%;">
             <h3 class="card-title text-center mb-4">Registro de Usuario</h3>
 
@@ -12,7 +12,7 @@
                         <input type="text" formControlName="name" class="form-control" placeholder="Nombre">
                         @if(registerForm.get('name')?.touched && registerForm.get('name')?.invalid){
                         <div class="text-danger small mt-1">
-                            El nombre debe tener al menos 4 caracteres.
+                            Ingrese un nombre válido.
                         </div>
                         }
                     </div>
@@ -23,7 +23,7 @@
                         <input type="text" formControlName="surname" class="form-control" placeholder="Apellido">
                         @if(registerForm.get('surname')?.touched && registerForm.get('surname')?.invalid){
                         <div class="text-danger small mt-1">
-                            El apellido debe tener al menos 4 caracteres.
+                            Ingrese un apellido válido.
                         </div>
                         }
                     </div>
@@ -58,7 +58,7 @@
                             placeholder="Mínimo 6 caracteres">
                         @if(registerForm.get('password')?.touched && registerForm.get('password')?.invalid){
                         <div class="text-danger small mt-1">
-                            La contraseña debe tener al menos 6 caracteres.
+                            Ingrese una contraseña valida.
                         </div>
                         }
                     </div>

@@ -1,1 +1,74 @@
-<p>mi-perfil worasdasdks!</p>
+<div class="perfil-container">
+    <app-video-fondo></app-video-fondo>
+
+    <div class="container py-4 px-3 px-md-4 animation">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                
+                <!-- Card de Información del Perfil -->
+                <div class="card mb-4 shadow-sm" style="background-color: var(--blanco-opaco); backdrop-filter: blur(5px); border-radius: 20px; border: 1px solid var(--blanco-opaco);">
+                    <div class="card-body p-4">
+                        <!-- Header con imagen y nombre -->
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <img [src]="currentUser().imagenPerfil" 
+                                 alt="Foto de perfil" 
+                                 class="rounded-circle"
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                            <div>
+                                <h3 class="fw-semibold mb-1" style="color: var(--blanco);">
+                                    {{currentUser().name}} {{currentUser().surname}}
+                                </h3>
+                                <p class="mb-0 fw-semibold" style="color: var(--gris-medio);">
+                                    @{{currentUser().username}}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="descripcion border-top border-bottom py-3" style="border-color: #2a2a2a !important;">
+                            <p class="fw-semibold mb-1 mx-2" style="color: var(--blanco);">Descripción</p>
+                            <p class="mb-0 fw-semibold mx-2" style="color: var(--gris-medio);">
+                                {{currentUser().descripcion}}
+                            </p>
+                        </div>
+
+                        <div class="email d-flex align-items-center gap-2 mt-3 mx-2">
+                            <img src="assets/img/correo-electronico.png" style="width: 20px; height: 20px;" alt="">
+                            <p class="fw-semibold mb-0" style="color: var(--gris-medio);">
+                                {{currentUser().email}}
+                            </p>
+                        </div>
+
+                        <div class="fecha-nacimiento d-flex mt-2">
+                            <p class="fw-semibold mb-1 mx-2" style="color: var(--blanco);">Fecha de nacimiento:</p>
+                            <p class="mb-0 fw-semibold mx-2" style="color: var(--gris-medio);">
+                                {{currentUser().fechaNacimiento | date: 'dd/MM/yyyy'}}
+                            </p>
+                        </div>
+
+                        <div class="creado-en d-flex mt-2">
+                            <p class="fw-semibold mb-1 mx-2" style="color: var(--blanco);">Creado en:</p>
+                            <p class="mb-0 fw-semibold mx-2" style="color: var(--gris-medio);">
+                                {{currentUser().createdAt | date: 'dd/MM/yyyy'}}
+                            </p>
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <!-- Sección de Publicaciones -->
+                <div class="publicaciones-section d-flex flex-column align-items-center">
+                    <h3 class="fw-semibold mb-3 text-white">Últimas publicaciones</h3>
+                    
+                    <div class="row g-3">
+                        @for(publicacion of publicaciones(); track publicacion){
+                            <div class="col-12">
+                                <app-publicacion [publicacion]="publicacion"></app-publicacion>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

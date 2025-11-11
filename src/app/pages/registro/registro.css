@@ -8,7 +8,8 @@
 .tarjeta-form{
     position: relative;
     border-radius: 20px;
-    background-color: var(--gris-oscuro);
+    background-color: var(--blanco-opaco);
+    backdrop-filter: blur(5px);
     color: white;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -33,33 +34,33 @@
 }
 
 .form-control:focus::placeholder{
-    color: var(--rosa-principal);
+    color: var(--violeta-principal);
 }
 .form-control:focus{
-    border-color: var(--rosa-principal);
+    border-color: var(--violeta-principal);
     box-shadow: none;
 }
 #campo-descripcion{
     border: 1px solid var(--gris-claro);
 }
 .btn-register{
-    background-color: var(--rosa-principal);
+    background-color: var(--violeta-principal);
     border: none;
     transition: all 0.2s ease-in-out;
 }
 .btn-register:active{
     transform: scale(1.1);
-    background-color: var(--rosa-principal);
+    background-color: var(--violeta-principal);
 }
 
 
 .link-login{
-    color: var(--rosa-principal);
+    color: var(--violeta-principal);    
     text-decoration: none;
 }
 
 .custom-file-upload{
-    background-color: var(--rosa-principal);
+    background-color: var(--violeta-principal);
     border: none;
 }
 

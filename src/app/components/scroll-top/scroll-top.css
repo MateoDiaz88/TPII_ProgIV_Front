@@ -1,0 +1,17 @@
+button {
+  background-color: var(--violeta-principal);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: var(--violeta-hover);
+  transform: translateY(-3px);
+}
+
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(40px);
+}

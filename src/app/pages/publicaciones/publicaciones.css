@@ -1,0 +1,123 @@
+.publicaciones-container , button, input, textarea{
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+
+.post-form-card{
+    background: var(--blanco-opaco);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    color: white;
+    
+}
+
+.custom-textarea{
+    border: 2px solid var(--gris-medio);
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+    color: var(--blanco);
+    font-weight: bold;
+}
+
+.custom-textarea:focus{
+    border: 2px solid var(--violeta-principal);
+    box-shadow: none;
+    color: var(--violeta-principal);
+}
+
+.custom-textarea::placeholder{
+    color: var(--gris-claro);
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-textarea:focus::placeholder{
+    color: var(--violeta-principal);
+}
+
+.btn-upload{
+
+    border-color: var(--blanco);
+    color: var(--violeta-principal);
+    transition: all 0.2s ease-in-out;
+    border-radius:15px;
+}
+
+.btn-upload:hover{
+    background-color: var(--violeta-principal);
+    border: none;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-upload:active{
+    transform: scale(0.9);
+    border-color: var(--violeta-principal);
+    background-color: var(--violeta-hover);
+}
+
+.btn-publish{
+    background-color: var(--violeta-principal);
+    border: none;
+    color: var(--blanco);
+    transition: all 0.2s ease-in-out;
+    border-radius:15px;
+}
+
+.btn-publish:hover{
+    background-color: transparent;
+    border: 1px solid var(--blanco);
+    color: var(--blanco);
+    transform: scale(1.1);
+}
+
+#btn-borrar-imagen{
+    background-color: var(--opaco);
+    border-color: var(--blanco);
+    color: white;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+#btn-borrar-imagen:hover{
+    background-color: var(--violeta-principal);
+    border: none;
+    color: white;
+    transform: scale(1.1);
+}
+
+#btn-borrar-imagen:active{
+    transform: scale(0.9);
+    border-color: var(--violeta-principal);
+    background-color: var(--violeta-hover);
+}
+
+.empty-state {
+    background: #1a1a1a;
+    border-radius: 16px;
+    border: 1px solid #2a2a2a;
+}
+
+.empty-state i {
+    color: #4a4a4a;
+}
+
+.empty-state h3 {
+    color: #ffffff;
+}
+
+.empty-state p {
+    color: #888;
+}
+.select-order{
+    box-shadow: none;
+}
+
+
+.boton-paginacion{
+    transition: all 0.2s ease-in-out;
+    margin: 0;
+}

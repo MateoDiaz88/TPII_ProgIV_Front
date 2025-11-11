@@ -40,7 +40,6 @@ export class AuthService {
   currentUser = signal<any | null>(null);
 
   constructor(private http: HttpClient) {
-
     this.validateSession().subscribe();
   }
 
@@ -49,9 +48,9 @@ export class AuthService {
     try {
       const response = await firstValueFrom(this.http.post<User>(`${this.apiUrlRegister}/register`, userData));
       return response;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      throw new Error("Error al registrar al usuario");
+      throw error;
     }
   }
 
@@ -70,7 +69,7 @@ export class AuthService {
           title: `¡Bienvenido ${result.user.name}!`,
           text: 'Has iniciado sesión correctamente',
           confirmButtonColor: '#d33',
-          background: "#111827",
+          background: "#0D0D0D",
           color: "white",
         })
 
@@ -79,45 +78,7 @@ export class AuthService {
     } catch (error: any) {
       this.currentUser.set(null);
       console.error(error);
-      switch (error.status) {
-        case 429:
-          Swal.fire({
-            icon: 'warning',
-            title: 'Error',
-            text: 'Demasiados intentos de inicio de sesión. Por favor, intenta nuevamente en 5 minutos.',
-            confirmButtonColor: '#d33',
-            background: "#111827",
-            color: "white",
-            width: '400px',
-            padding: '2em'
-          })
-          break;
-        case 401:
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Credenciales inválidas',
-            confirmButtonColor: '#d33',
-            background: "#111827",
-            color: "white",
-            width: '400px',
-            padding: '2em'
-          })
-          break;
-        default:
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error al iniciar sesión',
-            confirmButtonColor: '#d33',
-            background: "#111827",
-            color: "white",
-            width: '400px',
-            padding: '2em'
-          })
-          break;
-
-      }
+      
       throw error;
     }
   }
@@ -133,7 +94,6 @@ export class AuthService {
     }
   }
 
-  // Check perfil (por ejemplo al cargar la app)
   loadProfile() {
     this.http.get<User>(`${this.apiUrlLogin}/profile`, {
       withCredentials: true

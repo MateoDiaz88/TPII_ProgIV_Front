@@ -1,9 +1,13 @@
 nav {
-  background-color: #000000;
-  border-bottom: 4px solid #374151;
+  background: rgba(10, 10, 25, 0.05);
+  backdrop-filter: blur(10px);  
+  backdrop-filter: blur(14px) saturate(140%);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   font-family: "Poppins", sans-serif;
 }
-#nav-cont{
+
+#nav-cont {
   margin: 0;
 }
 
@@ -16,7 +20,7 @@ nav {
 }
 
 .titulo span {
-  color: var(--rosa-principal);
+  color: var(--violeta-principal);
 }
 
 .logo {
@@ -51,7 +55,8 @@ nav {
   bottom: 2px;
   width: 0%;
   height: 2px;
-  background-color: var(--rosa-principal);
+  background-color: var(--violeta-principal);
+  box-shadow: 0 0 5px var(--blanco);
   transition: width 0.3s ease;
 }
 
@@ -60,5 +65,6 @@ nav {
 }
 
 .navbar .nav-link:hover {
-  color: var(--rosa-principal);
+  color: var(--violeta-principal);
+  text-shadow: 0 0 3px var(--blanco);
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth-service/auth-service';
 import { UploadService } from '../../services/upload/upload-service';
 import { VideoFondo } from '../../components/video-fondo/video-fondo';
 import { DebounceClick } from '../../directives/debounce-click/debounce-click';
+import { animate } from "motion";
 
 @Component({
   selector: 'app-registro',
@@ -14,7 +15,7 @@ import { DebounceClick } from '../../directives/debounce-click/debounce-click';
   templateUrl: './registro.html',
   styleUrl: './registro.css'
 })
-export class Registro {
+export class Registro implements AfterViewInit {
   loading = signal(false);
   selectedFile: File | null = null;
   selectedFileName: string = '';
@@ -25,11 +26,18 @@ export class Registro {
   private router = inject(Router);
 
 
+
+
+  ngAfterViewInit() {
+    animate(".animation", { opacity: [0, 1], transform: ["translateY(40px)", "translateY(0)"] }, { duration: 0.5, ease: "easeOut" });
+  }
+
+
   registerForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(4)]],
-    surname: ['', [Validators.required, Validators.minLength(4)]],
+    name: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/)]],
+    surname: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/)]],
     email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?!.*@).{8,}$/)]],
+    username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?!.*@)[A-Za-z\d_-]{8,20}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     repetirPassword: ['', [Validators.required]],
     fechaNacimiento: ['', [Validators.required, this.minimunAgeValidator(16)]],
@@ -41,16 +49,16 @@ export class Registro {
   minimunAgeValidator(minAge: number): ValidatorFn { // Retorna una funcion que angular llama automaticamente para validar el input de la fecha de nacimiento
     return (control: AbstractControl): ValidationErrors | null => {
       const fecha = new Date(control.value);
-      if(!control.value) return null;
+      if (!control.value) return null;
 
-      const today = new Date(); // Obtenemos la fecha actual
-      let age = today.getFullYear() - fecha.getFullYear(); // Obtenemos la diferencia de años
-      const monthDiff = today.getMonth() - fecha.getMonth(); // Obtenemos la diferencia de meses
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < fecha.getDate())) {
-      age--;
-      } 
+      const today = new Date(); // Esto obtiene la fecha actual
+      let age = today.getFullYear() - fecha.getFullYear(); // Obtiene la diferencia de años
+      const monthDiff = today.getMonth() - fecha.getMonth(); // Obtiene la diferencia de meses
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < fecha.getDate())) { // Si todavia no cumplió en el año, le resta un año
+        age--;
+      }
 
-      return age >= minAge ? null : {minimumAge: {requiredAge: minAge, actualAge: age}};
+      return age >= minAge ? null : { minimumAge: { requiredAge: minAge, actualAge: age } };
     }
   }
 
@@ -79,7 +87,7 @@ export class Registro {
           title: 'Tipo de archivo inválido',
           text: 'Solo se permiten imágenes (JPG, PNG)',
           confirmButtonColor: '#d33',
-          background: "#111827",
+          background: "#0D0D0D",
           color: "white",
           width: '400px',
           padding: '2em'
@@ -94,7 +102,7 @@ export class Registro {
           title: 'Archivo muy grande',
           text: 'La imagen debe pesar menos de 5MB',
           confirmButtonColor: '#d33',
-          background: "#111827",
+          background: "#0D0D0D",
           color: "white",
           width: '400px',
           padding: '2em'
@@ -114,7 +122,11 @@ export class Registro {
         icon: 'error',
         title: 'Imagen no seleccionada',
         text: 'Por favor selecciona una imagen.',
-        confirmButtonColor: '#d33'
+        confirmButtonColor: '#d33',
+        background: "#0D0D0D",
+        color: "white",
+        width: '400px',
+        padding: '2em'
       });
       return;
     }
@@ -125,7 +137,7 @@ export class Registro {
         title: 'Campos inválidos',
         text: 'Por favor completa correctamente todos los campos.',
         confirmButtonColor: '#d33',
-        background: "#111827",
+        background: "#0D0D0D",
         color: "white",
         width: '400px',
         padding: '2em'
@@ -155,23 +167,31 @@ export class Registro {
         title: 'Registro exitoso',
         text: 'El usuario se ha registrado correctamente.',
         confirmButtonColor: '#3085d6',
-        background: "#111827",
+        background: "#0D0D0D",
         color: "white",
         width: '400px',
         padding: '2em'
       });
-      this.router.navigate(['/publicaciones']);
+      this.router.navigate(['/login']);
 
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error en registro");
+
+      let mensaje = "Ha ocurrido un error en el registro"
+
+      if (error.status === 409) {
+        mensaje = "El nombre de usuario o mail ya existe"
+      } else if (error.status === 400) {
+        mensaje = "Datos inválidos. Por favor completa correctamente todos los campos."
+      }
 
       Swal.fire({
         icon: 'error',
         title: 'Error en el registro',
-        text: 'Ha ocurrido un error en el registro.',
+        text: mensaje,
         confirmButtonColor: '#d33',
-        background: "#111827",
+        background: "#0D0D0D",
         color: "white",
         width: '400px',
         padding: '2em'

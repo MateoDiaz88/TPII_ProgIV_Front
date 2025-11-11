@@ -10,20 +10,18 @@ import { firstValueFrom } from 'rxjs';
 export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) { }
 
- async canActivate(): Promise<boolean | UrlTree> {
+  async canActivate(): Promise<boolean | UrlTree> {
     try {
       const res = await firstValueFrom(this.auth.validateSession());
 
       if (!res) {
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'Debes estar logueado para acceder a esta sección.',
-          confirmButtonColor: '#d33',
-          background: "#111827",
-          color: "white",
-          width: '400px',
-          padding: '2em'
+          title: 'Debes estar logueado',
+          showConfirmButton: false,
+          timer: 2000,
+          background: '#0D0D0D',
+          color: 'white'
         });
         return this.router.createUrlTree(['/login']);
       }

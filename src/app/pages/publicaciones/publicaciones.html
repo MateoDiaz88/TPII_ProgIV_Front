@@ -1,3 +1,142 @@
-<div class="publicaciones-main d-flex justify-content-center align-items-center">
+<div class="publicaciones-main d-flex flex-column align-items-center">
     <app-video-fondo></app-video-fondo>
+
+    <!-- Formulario de Creación -->
+    <div class="create-publicacion-wrapper py-3 col-9 animation">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div class="post-form-card card shadow-lg border-0">
+                        <div class="card-header form-header">
+                            <h5 class="mb-0 text-white fw-semibold">Crear Publicación</h5>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <form [formGroup]="publicacionForm">
+                                <!-- Textarea -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">¿Qué estás pensando?</label>
+                                    <textarea formControlName="contenido" class="form-control custom-textarea"
+                                        placeholder="Comparte algo interesante..." rows="4"></textarea>
+                                    @if(publicacionForm.get('contenido')?.touched &&
+                                    publicacionForm.get('contenido')?.invalid){
+                                    <div class="text-danger small mt-2 d-flex align-items-center gap-2">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        <span>Ingrese una publicación válida.</span>
+                                    </div>
+                                    }
+                                </div>
+
+                                <!-- Vista previa de imagen -->
+                                @if(imagenPreview()){
+                                <div class="mb-3">
+                                    <div class="position-relative image-preview-container">
+                                        <img [src]="imagenPreview()" alt="Vista previa"
+                                            class="img-fluid rounded-3 w-100 image-preview">
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-remove-image"
+                                            id="btn-borrar-imagen" (click)="removeImage()">
+                                            <img src="assets/img/eliminar.png" alt="" style="width: 30px;">
+                                        </button>
+                                    </div>
+                                </div>
+                                }
+
+                                <!-- Botones de acción -->
+                                <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+                                    <input type="file" accept="image/*" hidden #fileInput
+                                        (change)="onFileSelected($event)">
+
+                                    <button type="button" (click)="fileInput.click()"
+                                        class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2 btn-upload">
+                                        <img src="assets/img/galeria-de-fotos.png" alt="" style="width: 30px;">
+                                    </button>
+
+                                    <button type="submit"
+                                        class="btn btn-primary d-flex align-items-center justify-content-center gap-2 btn-publish"
+                                        (click)="crearPublicacion()" [disabled]="publicacionForm.invalid">
+                                        <span>Publicar</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTROS / ORDEN -->
+    <div class="col-12 col-md-9 mt-3 px-3">
+        <!-- En móvil: todo en columna, en desktop: fila -->
+        <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-2 gap-md-0">
+
+            <!-- Filtro de orden -->
+            <div class="d-flex gap-2 p-3 rounded-pill justify-content-center"
+                style="background-color: var(--blanco-opaco); backdrop-filter: blur(5px);">
+                <label for="orden" class="text-white fw-semibold text-nowrap">Ordenar por:</label>
+                <select id="orden" class="form-select form-select-sm w-auto select-order" [value]="orden()"
+                    (change)="onOrderChange($event)">
+                    <option value="fecha">Más recientes</option>
+                    <option value="likes">Más populares</option>
+                </select>
+            </div>
+
+            <!-- Botones de paginación -->
+            <div class="d-flex gap-2 p-3 rounded-pill align-items-center justify-content-center"
+                style="background-color: var(--blanco-opaco); backdrop-filter: blur(5px);">
+                <button class="btn btn-outline-light btn-sm rounded-pill boton-paginacion" (click)="anteriorPagina()"
+                    [disabled]="offset() === 0">
+                    Anterior
+                </button>
+
+                <button class="btn btn-outline-light btn-sm rounded-pill boton-paginacion" (click)="siguientePagina()"
+                    [disabled]="!hayMas()">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Publicaciones -->
+    <div class="publicaciones-container py-3 col-8 mx-auto animation">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    @if(publicaciones().length == 0 && !cargando()){
+                    <div class="empty-state border-0 text-center py-5">
+                        <div class="card-body">
+                            <i class="bi bi-inbox display-1"></i>
+                            <h3 class="mt-3 fw-semibold">No hay publicaciones aún</h3>
+                            <p class="mb-0">Sé el primero en compartir algo</p>
+                        </div>
+                    </div>
+                    }
+                    @else{
+                    <div class="d-flex flex-column gap-3 publicaciones-list">
+                        @for(publicacion of publicaciones(); track publicacion){
+                        <app-publicacion [publicacion]="publicacion"></app-publicacion>
+                        }
+                    </div>
+                    }
+
+                    @if(cargando()){
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    }
+
+                    @if(!hayMas() && !cargando()){
+                    <div class="text-center text-secondary mt-3">
+                        <small>No hay más publicaciones para mostrar</small>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-scroll-top></app-scroll-top>
 </div>

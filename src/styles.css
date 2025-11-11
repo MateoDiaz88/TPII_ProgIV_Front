@@ -1,13 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --rosa-principal: #EC4899;
-  --rosa-hover: #DB2777;
-  --rosa-hover-secundario: #BE185D;
+  --violeta-principal: #C084FC;
+  --violeta-hover: #8B5CF6;
+  --violeta-profundo: #6D28D9;
+  --azul-galaxia: #5B9FFF;
   --amarillo-acento: #FACC15;
   --amarillo-claro: #FDE047;
   --negro: #000000;
-  --gris-oscuro: #111827;
+  --blanco-opaco: #FFFFFF0D;
+  --opaco: #0D0D0D;
+  --gris-oscuro: #0B0F19;
   --gris-medio: #9CA3AF;
   --gris-claro: #D1D5DB;
   --blanco: #FFFFFF;

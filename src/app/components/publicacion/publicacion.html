@@ -1,39 +1,76 @@
-<div class="publicacion-container container">
-    <div class="informacion-container">
-        <div class="user-cont">
-            <h3>{{publicacion.user.name}}</h3>
-        </div>
-        <div class="date-cont">
-            <h3>{{publicacion.fechaPublicacion | timeAgo}}</h3>
+<div class="publicacion-container container mt-4 mb-4">
+    <div class="card publicacion-card">
+        <div class="card-body">
+            <!-- Header con info del usuario y fecha -->
+            <div class="informacion-container d-flex justify-content-between align-items-center mb-3">
+                <div class="user-cont d-flex align-items-center gap-2">
+                    <img [src]="publicacion.user.imagenPerfil" 
+                         alt="Avatar" 
+                         class="rounded-circle user-avatar"
+                         style="width: 50px; height: 50px; object-fit: cover;">
+                    <h5 class="mb-0 fw-semibold user-name">{{publicacion.user.name}}</h5>
+                </div>
+                <div class="date-cont">
+                    <small class="post-date">{{publicacion.fechaPublicacion | timeAgo}}</small>
+                </div>
+            </div>
+
+            <!-- Contenido de la publicación -->
+            <div class="content-cont mb-3">
+                <p class="mb-0 publicacion-texto">{{publicacion.contenido}}</p>
+            </div>
+
+            <!-- Imagen de la publicación -->
+            @if(publicacion.imagenPublicacion){
+                <div class="img-cont mb-3">
+                    <img [src]="publicacion.imagenPublicacion" 
+                         alt="imagen-publicacion" 
+                         class="img-fluid rounded w-100 publicacion-imagen">
+                </div>
+            }
+
+            <!-- Footer con likes y comentarios -->
+            <div class="footer-publicacion border-top pt-3">
+                <div class="d-flex align-items-center gap-2 gap-md-4 flex-wrap">
+                    <!-- Likes -->
+                    <div class="likes-cont d-flex align-items-center gap-2">
+                        <button (click)="toggleLike()" 
+                                class="btn interaction-btn rounded-pill p-2 px-3">
+                            <img [src]="hasLiked() ? 'assets/img/me-gusta-activado.png' : 'assets/img/me-gusta-desactivado.png'"
+                                 alt="Like" 
+                                 style="width: 20px; height: 20px;">
+                            <span class="ms-2">{{likes().length}} Me gusta</span>
+                        </button>
+                    </div>
+
+                    <!-- Comentarios -->
+                    <div class="comments-cont d-flex align-items-center gap-2">
+                        <button class="btn interaction-btn rounded-pill p-2 px-3" 
+                                (click)="toggleComments()">
+                            <img [src]="commentsVisible() ? 'assets/img/dialogo-relleno.png' : 'assets/img/dialogo-no-relleno.png'"
+                                 alt="Comentarios" 
+                                 style="width: 20px; height: 20px;">
+                            <span class="ms-2">Comentarios</span>
+                        </button>
+                    </div>
+
+                    @if(publicacion.user._id === currentUser._id){
+                        <div class="delete-button">
+                            <button class="btn interaction-btn rounded-pill p-2 px-3" (click)="eliminarPublicacion()">
+                                <img src="assets/img/eliminar.png" alt="" style="width: 20px; height: 20px;">
+                            </button>
+                        </div>
+                    }
+                </div>
+
+                <!-- Sección de comentarios expandible -->
+                @if(this.commentsVisible()){
+                    <div class="comments-section mt-3 pt-3 border-top">
+                        <h6 class="comments-title mb-3">{{publicacion.comentarios.length}} Comentarios</h6>
+                        <app-comentarios [comentarios]="comentarios()" [publicacionId]="publicacion._id" [currentUser]="currentUser" (onComentarioAgregado)="onComentarioAgregado($event)"></app-comentarios>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-    <div class="content-cont">
-        <p>{{publicacion.contenido}}</p>
-    </div>
-    <div class="img-cont">
-        <img [src]="publicacion.imagen" alt="imagen-publicacion">
-    </div>
-    <div class="footer-publicacion">
-        <div class="likes-cont">
-
-            <button (click)="toggleLike(publicacion)">
-                <i class="fas fa-heart"
-                    [ngClass]="{'text-red-500': hasLiked(publicacion), 'text-white': !hasLiked(publicacion)}"></i>
-            </button>
-            <span>{{publicacion.likes.length}} Me gusta</span>
-        </div>
-        <div class="comments-cont">
-            <button class="comments-toggle btn shadow-lg" (click)="toggleComments()">
-                <img [src]="commentsVisible() ? 'assets/img/dialogo-relleno.png' : 'assets/img/dialogo-no-relleno.png'" alt="">
-            </button>
-        </div>
-        @if(this.commentsVisible()){
-        <div class="comments-cont">
-            <h3>{{publicacion.comentarios}} Comentarios</h3>
-        </div>
-        }
-
-    </div>
-
-
 </div>

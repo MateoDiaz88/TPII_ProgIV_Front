@@ -3,6 +3,10 @@ import { AuthGuard } from './guards/auth-guard/auth-guard';
 
 export const routes: Routes = [
     {
+        path: 'home',
+        loadComponent: () => import('./pages/home/home').then(m => m.Home)
+    },
+    {
         path: 'registro',
         loadComponent: () => import('./pages/registro/registro').then(m => m.Registro),
         
@@ -14,6 +18,7 @@ export const routes: Routes = [
     {
         path: 'publicaciones',
         loadComponent: () => import("./pages/publicaciones/publicaciones").then(m => m.Publicaciones),
+        canActivate: [AuthGuard]
         
     },
     {
@@ -23,7 +28,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        loadComponent: () => import('./pages/publicaciones/publicaciones').then(m => m.Publicaciones),
+        loadComponent: () => import('./pages/home/home').then(m => m.Home),
     }
 
 ];

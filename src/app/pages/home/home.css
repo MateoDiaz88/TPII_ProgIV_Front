@@ -1,0 +1,111 @@
+.home-container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+app-video-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+#stars-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none; /* evita bloquear clics */
+}
+
+.hero-section {
+  text-align: center;
+  padding-top: 20vh;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  color: #cfcfcf;
+}
+
+.hero-buttons .btn {
+  margin: 0 1rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border-radius: 2rem;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 8rem;
+  flex-wrap: wrap;
+}
+
+.subtitles-cont img{
+  width: 40px;
+  height: 40px;
+}
+
+.subtitles-cont h3{
+  margin: 0;
+}
+
+.feature {
+  width: 280px;
+  background: var(--blanco-opaco);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.feature:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+.btn-style{
+  background-color: var(--violeta-principal);
+}
+
+.text-shadow {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+#btn-comenzar{
+  transition: all 0.2s ease-in-out;
+}
+
+#btn-comenzar:hover{
+  transform: scale(1.1);
+  background-color: var(--violeta-hover);
+}
+
+#btn-explorar{
+  transition: all 0.2s ease-in-out;
+}
+
+#btn-explorar:hover{
+  transform: scale(1.1);
+
+}
+/* Hover de las cards */
