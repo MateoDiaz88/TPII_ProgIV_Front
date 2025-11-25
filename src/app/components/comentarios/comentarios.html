@@ -24,9 +24,13 @@
                     {{comentario.contenido}}
                 </p>
 
-                <button class="btn btn-sm mt-2" (click)="activarEdicion(comentario)" >
-                    <img src="assets/img/editar.png" alt="" style="width: 20px; ">
-                </button>
+                    @if(comentario.autor._id === currentUser._id){
+                        
+                        <button class="btn btn-sm mt-2" (click)="activarEdicion(comentario)" >
+                            <img src="assets/img/editar.png" alt="" style="width: 20px; ">
+                        </button>
+                    }
+
                 }
 
 

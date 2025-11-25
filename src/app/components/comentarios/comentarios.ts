@@ -92,6 +92,7 @@ export class Comentarios{
     }
 
     if (!comentario._id) return;
+    if(comentario.autor._id !== this.currentUser._id) return;
 
     this.comentariosService.updateComentario(comentario._id, this.contenidoEditado()).subscribe({
       next: () => {
