@@ -24,7 +24,8 @@ export const routes: Routes = [
     },
     {
         path: "publicacion/:id",
-        loadComponent: () => import("./pages/publicacion/publicacion").then(m => m.Publicacion)
+        loadComponent: () => import("./pages/publicacion/publicacion").then(m => m.Publicacion),
+        canActivate: [AuthGuard]
     },
     {
         path: "dashboard/usuarios",
@@ -52,6 +53,7 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () => import('./pages/cargando/cargando').then(m => m.Cargando),
+        pathMatch: 'full'
     }
 
 ];

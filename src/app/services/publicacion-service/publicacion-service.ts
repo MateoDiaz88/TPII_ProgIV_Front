@@ -133,7 +133,8 @@ export class PublicacionService {
           color: "white",
           width: '400px',
           padding: '2em'
-        })
+        });
+        throw error;
 
       }
     })

@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth-service/auth-service';
 import { animate } from 'motion';
 import { debounceTime, Subject } from 'rxjs';
 import { ScrollTop } from '../../components/scroll-top/scroll-top';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publicaciones',
@@ -19,6 +20,7 @@ export class Publicaciones implements AfterViewInit, OnInit {
   private publicacionService = inject(PublicacionService);
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
+  private router = inject(Router);
   publicaciones = this.publicacionService.publicaciones;
   cargando = this.publicacionService.cargando;
   hayMas = this.publicacionService.hayMas;
@@ -241,7 +243,21 @@ export class Publicaciones implements AfterViewInit, OnInit {
           width: '400px',
           padding: '2em'
         });
+      } else if(error.status === 401){
+        Swal.fire({
+          icon: 'error',
+          title: 'No estas logueado',
+          text: 'Por favor inicia sesion de nuevo.',
+          confirmButtonColor: '#d33',
+          background: "#0D0D0D",
+          color: "white",
+          width: '400px',
+          padding: '2em'
+        });
+
+        this.router.navigate(["/login"]);
       }
+
     }
   }
 
