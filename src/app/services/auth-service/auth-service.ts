@@ -64,7 +64,9 @@ export class AuthService {
 
       if (result) {
 
-        this.currentUser.set(result.user); // Actualizamos el currentUserSubject
+        this.currentUser.set(result.user); 
+
+        this.startSessionTimer();
         Swal.fire({
           icon: 'success',
           title: `¡Bienvenido ${result.user.name}!`,
@@ -131,7 +133,11 @@ export class AuthService {
 
   async initSession() {
     try {
-      await lastValueFrom(this.validateSession());
+      const valid = await lastValueFrom(this.validateSession());
+
+      if(valid){
+        this.startSessionTimer();
+      }
     } catch (e) {
       console.warn("No se pudo inicializar sesión:", e);
     }

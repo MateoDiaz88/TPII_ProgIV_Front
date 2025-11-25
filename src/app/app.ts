@@ -11,10 +11,14 @@ import Swal from 'sweetalert2';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit{
+export class App implements OnInit {
   protected readonly title = signal('proyecto-front');
   private auth = inject(AuthService);
   ngOnInit() {
-    this.auth.validateSession().subscribe();
+    this.auth.validateSession().subscribe(isValid => {
+      if (isValid) {
+        this.auth.startSessionTimer(); 
+      }
+    });
   }
 }
