@@ -65,7 +65,7 @@ export class ComentariosService {
   }
 
   updateComentario(comentarioId: string, nuevoContenido: string) {
-    return this.http.patch<Comentario>(`${this.apiUrl}/comentarios/${comentarioId}`, { contenido: nuevoContenido });
+    return this.http.patch<Comentario>(`${this.apiUrl}/comentarios/${comentarioId}`, { contenido: nuevoContenido }, { withCredentials: true });
   }
 
   resetComentarios() {

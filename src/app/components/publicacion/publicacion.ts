@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Comentarios } from '../comentarios/comentarios';
 import { RouterLink } from '@angular/router';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 @Component({
   selector: 'app-publicacion',
-  imports: [TimeAgoPipe, CommonModule, RouterLink],
+  imports: [TimeAgoPipe, CommonModule, RouterLink, TruncatePipe],
   templateUrl: './publicacion.html',
   styleUrl: './publicacion.css',
 })

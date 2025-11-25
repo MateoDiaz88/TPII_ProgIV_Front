@@ -22,7 +22,7 @@
 
             <!-- Contenido de la publicación -->
             <div class="content-cont mb-3">
-                <p class="mb-0 publicacion-texto">{{publicacion.contenido}}</p>
+                <p class="mb-0 publicacion-texto">{{publicacion.contenido | truncate: 200: '...'}}</p>
             </div>
 
             <!-- Imagen de la publicación -->

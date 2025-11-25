@@ -18,7 +18,7 @@ export class NavBar {
 
   currentUser = this.auth.currentUser;
   isLogged = computed(() => !!this.currentUser());
-
+  isAdmin = computed(() => this.currentUser()?.perfil === "administrador");
   logOut() {
     this.auth.logOut();
 

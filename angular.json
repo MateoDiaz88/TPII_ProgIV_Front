@@ -46,7 +46,9 @@
               "fileReplacements": [{
                 "replace": "src/enviroments/enviroment.ts",
                 "with": "src/enviroments/enviroment.prod.ts"
-              }]
+              }
+            ],
+            "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,

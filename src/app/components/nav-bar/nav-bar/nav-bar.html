@@ -30,14 +30,14 @@
         </li>
         }
 
-        <!--
-          <li class="nav-item" *appShowIf="currentUser().perfil === 'administrador'">
+
+        <li class="nav-item" *appShowIf="isAdmin()">
           <a class="nav-link retro-font " routerLink="/dashboard/estadisticas">Estadísticas</a>
-          </li>
-          <li class="nav-item" *appShowIf="currentUser().perfil === 'administrador'">
-            <a class="nav-link retro-font" routerLink="/dashboard/usuarios">Usuarios</a>
-          </li>
-        -->
+        </li>
+        <li class="nav-item" *appShowIf="isAdmin()">
+          <a class="nav-link retro-font" routerLink="/dashboard/usuarios">Usuarios</a>
+        </li>
+
 
 
 

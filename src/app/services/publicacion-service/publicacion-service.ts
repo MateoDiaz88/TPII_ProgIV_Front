@@ -32,11 +32,11 @@ export interface PublicacionData {
 export class PublicacionService {
   apiUrl = environment.apiUrl;
   publicaciones = signal<Publicacion[]>([]);
-  publicacion = signal<Publicacion |null>(null);
+  publicacion = signal<Publicacion | null>(null);
   cargando = signal<boolean>(false);
   hayMas = signal<boolean>(false);
   constructor(private http: HttpClient) { }
-   cargarPublicaciones(orden: string = "fecha", offset: number = 0, limit: number = 5, userId?: string | null) {
+  cargarPublicaciones(orden: string = "fecha", offset: number = 0, limit: number = 5, userId?: string | null) {
     this.cargando.set(true);
     let params = new HttpParams()
       .set("orden", orden)
@@ -49,7 +49,7 @@ export class PublicacionService {
 
     console.log(params)
 
-    this.http.get<{ total: number, publicaciones: Publicacion[], paginaActual: number, totalPaginas: number }>(`${this.apiUrl}/publicaciones`, { params}).subscribe({
+    this.http.get<{ total: number, publicaciones: Publicacion[], paginaActual: number, totalPaginas: number }>(`${this.apiUrl}/publicaciones`, { params }).subscribe({
       next: (res) => {
         const { publicaciones, total } = res;
 
@@ -124,17 +124,33 @@ export class PublicacionService {
       },
       error: error => {
         console.error(error);
+        let mensaje = "Error al crear la publicacion";
+        let titulo = "Error";
+        switch (error.status) {
+          case 400:
+            titulo = "Campos inválidos";
+            mensaje = "Porfavor ingresa una imagen o contenido válido.";
+            break;
+          case 401:
+            titulo = "No estas logueado";
+            mensaje = "Por favor inicia sesion de nuevo.";
+            break;
+          case 403:
+            titulo = "Acceso denegado";
+            mensaje = "No tienes permiso para crear publicaciones.";
+            break;
+        }
+
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'Error al crear la publicacion',
+          title: titulo,
+          text: mensaje,
           confirmButtonColor: '#d33',
           background: "#0D0D0D",
           color: "white",
           width: '400px',
           padding: '2em'
         });
-        throw error;
 
       }
     })
@@ -144,11 +160,11 @@ export class PublicacionService {
 
   // publicacion-service.ts - MODIFICAR
   toggleLike(publicacionId: string, userId: string): Observable<Publicacion> {
-    return this.http.post<Publicacion>(`${this.apiUrl}/publicaciones/${publicacionId}/like`, { userId });
+    return this.http.post<Publicacion>(`${this.apiUrl}/publicaciones/${publicacionId}/like`, { userId }, { withCredentials: true });
   }
 
   deletePublicacion(publicacionId: string, userId: string) {
-    return this.http.delete<void>(`${this.apiUrl}/publicaciones/${publicacionId}`, { params: { userId } }).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/publicaciones/${publicacionId}`, { params: { userId }, withCredentials: true }).pipe(
       tap(() => {
         this.publicaciones.update(prev => prev.filter(pub => pub._id !== publicacionId));
       })

@@ -9,6 +9,7 @@ import { animate } from 'motion';
 import { debounceTime, Subject } from 'rxjs';
 import { ScrollTop } from '../../components/scroll-top/scroll-top';
 import { Router } from '@angular/router';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-publicaciones',
@@ -232,32 +233,6 @@ export class Publicaciones implements AfterViewInit, OnInit {
       this.imagenPreview.set(null);
     } catch (error: any) {
       console.error(error);
-      if (error.status === 400) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Campos inválidos',
-          text: 'Por favor ingresa una imagen o contenido válido.',
-          confirmButtonColor: '#d33',
-          background: "#0D0D0D",
-          color: "white",
-          width: '400px',
-          padding: '2em'
-        });
-      } else if(error.status === 401){
-        Swal.fire({
-          icon: 'error',
-          title: 'No estas logueado',
-          text: 'Por favor inicia sesion de nuevo.',
-          confirmButtonColor: '#d33',
-          background: "#0D0D0D",
-          color: "white",
-          width: '400px',
-          padding: '2em'
-        });
-
-        this.router.navigate(["/login"]);
-      }
-
     }
   }
 
