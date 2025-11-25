@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, firstValueFrom, lastValueFrom, map, Observ
 import Swal from 'sweetalert2';
 import { environment } from '../../../enviroments/enviroment';
 import { User, UsuariosService } from '../usuarios-service/usuarios-service';
+import { Router } from '@angular/router';
 export interface RegisterData {
   name: string,
   surname: string,
@@ -16,8 +17,8 @@ export interface RegisterData {
   public_id: string
 }
 
-export interface AdminCreateUserData extends RegisterData{
-  perfil:"usuario" | "administrador"
+export interface AdminCreateUserData extends RegisterData {
+  perfil: "usuario" | "administrador"
 }
 
 
@@ -29,6 +30,7 @@ export class AuthService {
   apiUrl = environment.apiUrl;
   isLogged = signal<boolean>(false);
   currentUser = signal<any | null>(null);
+  private router = inject(Router)
   private refreshTimer: any;
 
   constructor(private http: HttpClient) {
@@ -37,7 +39,7 @@ export class AuthService {
 
   async register(userData: RegisterData): Promise<User> {
     try {
-      const response = await firstValueFrom(this.http.post<User>(`${this.apiUrl}/usuarios/register`,userData));
+      const response = await firstValueFrom(this.http.post<User>(`${this.apiUrl}/usuarios/register`, userData));
       return response;
     } catch (error: any) {
       console.error(error);
@@ -45,15 +47,15 @@ export class AuthService {
     }
   }
 
-  async createUserByAdmin(data:AdminCreateUserData): Promise<User> {
-    try{
+  async createUserByAdmin(data: AdminCreateUserData): Promise<User> {
+    try {
       const response = await firstValueFrom(this.http.post<User>(`${this.apiUrl}/usuarios/create-user`, data, { withCredentials: true }));
       return response;
-    } catch(error){
+    } catch (error) {
       console.error(error);
       throw error;
     }
-}
+  }
 
   async login(login: string, password: string) {
     try {
@@ -64,7 +66,7 @@ export class AuthService {
 
       if (result) {
 
-        this.currentUser.set(result.user); 
+        this.currentUser.set(result.user);
 
         this.startSessionTimer();
         Swal.fire({
@@ -135,7 +137,7 @@ export class AuthService {
     try {
       const valid = await lastValueFrom(this.validateSession());
 
-      if(valid){
+      if (valid) {
         this.startSessionTimer();
       }
     } catch (e) {
@@ -158,6 +160,22 @@ export class AuthService {
 
     if (isConfirmed) {
       this.extendSession();
+    } else {
+      this.stopSessionTimer();
+      this.currentUser.set(null);
+      this.isLogged.set(false);
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sesión expirada',
+        text: 'Tu sesión ha expirado por inactividad.',
+        confirmButtonColor: '#d33',
+        background: "#0D0D0D",
+        color: "white",
+      });
+
+      this.logOut().finally(() => {
+        this.router.navigate(['/login']);});
     }
   }
   extendSession() {
