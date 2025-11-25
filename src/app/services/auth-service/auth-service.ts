@@ -32,6 +32,7 @@ export class AuthService {
   currentUser = signal<any | null>(null);
   private router = inject(Router)
   private refreshTimer: any;
+  private logoutTimeout: any;
 
   constructor(private http: HttpClient) {
   }
@@ -161,21 +162,27 @@ export class AuthService {
     if (isConfirmed) {
       this.extendSession();
     } else {
-      this.stopSessionTimer();
-      this.currentUser.set(null);
-      this.isLogged.set(false);
+      clearTimeout(this.logoutTimeout); 
 
-      Swal.fire({
-        icon: 'warning',
-        title: 'Sesión expirada',
-        text: 'Tu sesión ha expirado por inactividad.',
-        confirmButtonColor: '#d33',
-        background: "#0D0D0D",
-        color: "white",
-      });
+      this.logoutTimeout = setTimeout(() => {
+        this.stopSessionTimer();
+        this.currentUser.set(null);
+        this.isLogged.set(false);
 
-      this.logOut().finally(() => {
-        this.router.navigate(['/login']);});
+        Swal.fire({
+          icon: 'warning',
+          title: 'Sesión expirada',
+          text: 'Tu sesión expiró por inactividad.',
+          confirmButtonColor: '#d33',
+          background: "#0D0D0D",
+          color: "white"
+        });
+
+        this.logOut().finally(() => {
+          this.router.navigate(['/login']);
+        });
+
+      }, 5 * 60 * 1000); 
     }
   }
   extendSession() {
