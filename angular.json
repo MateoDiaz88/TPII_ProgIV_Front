@@ -48,7 +48,7 @@
                 "with": "src/enviroments/enviroment.prod.ts"
               }
             ],
-            "serviceWorker": "ngsw-config.json"
+            "serviceWorker": false
             },
             "development": {
               "optimization": false,
