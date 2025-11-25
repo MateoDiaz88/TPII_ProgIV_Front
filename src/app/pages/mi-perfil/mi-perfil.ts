@@ -20,6 +20,8 @@ export class MiPerfil implements OnInit, AfterViewInit{
   publicaciones = this.publicacionesService.publicaciones;
   ngOnInit() {
     this.cargarPublicacionesUsuario();
+    console.log(this.currentUser());
+    console.log(this.publicaciones.length);
   }
 
   ngAfterViewInit() {
@@ -28,6 +30,7 @@ export class MiPerfil implements OnInit, AfterViewInit{
 
    cargarPublicacionesUsuario(){
     try{
+
       this.publicacionesService.cargarPublicaciones("fecha", 0, 3, this.currentUser()._id); 
     } catch(error){
       console.error(error);

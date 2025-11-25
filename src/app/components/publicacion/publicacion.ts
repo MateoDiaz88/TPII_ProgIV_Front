@@ -1,28 +1,25 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { TimeAgoPipe } from '../../pipes/timeAgoPipe.pipe';
 import { AuthService } from '../../services/auth-service/auth-service';
-import { Comentario, Publicacion as PublicacionModel, PublicacionService } from '../../services/publicacion-service/publicacion-service';
+import {Publicacion as PublicacionModel, PublicacionService } from '../../services/publicacion-service/publicacion-service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Comentarios } from '../comentarios/comentarios';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-publicacion',
-  imports: [TimeAgoPipe, CommonModule, Comentarios],
+  imports: [TimeAgoPipe, CommonModule, RouterLink],
   templateUrl: './publicacion.html',
   styleUrl: './publicacion.css',
 })
-export class Publicacion implements OnInit{
+export class Publicacion implements OnInit {
   private auth = inject(AuthService);
   private publicacionService = inject(PublicacionService);
   @Input() publicacion!: PublicacionModel;
   currentUser = this.auth.currentUser();
-  commentsVisible = signal(false);
   likes = signal<string[]>([]);
-  comentarios = signal<Comentario[]>([]);
-
   ngOnInit() {
-      this.likes.set(this.publicacion.likes);
-      this.comentarios.set(this.publicacion.comentarios);
+    this.likes.set(this.publicacion.likes);
   }
 
   hasLiked() {
@@ -33,18 +30,16 @@ export class Publicacion implements OnInit{
     return this.likes().includes(this.currentUser._id);
   }
 
-  onComentarioAgregado(comentario: Comentario) {
-    this.comentarios.update(prev => [...prev, comentario]);
-  }
 
-  
-  toggleLike() {
+  toggleLike(event: Event) {
+    event.stopPropagation(); // Detiene la propagación, NO navega a la publicación
+
     if (!this.currentUser) {
       return;
     }
 
     this.publicacionService.toggleLike(this.publicacion._id, this.currentUser._id).subscribe({
-      next:(updated) =>{
+      next: (updated) => {
         this.likes.set(updated.likes)
       },
       error: error => {
@@ -65,11 +60,8 @@ export class Publicacion implements OnInit{
   }
 
 
-  
 
-  toggleComments() {
-    this.commentsVisible.set(!this.commentsVisible());
-  }
+
 
   validarUserPublicacion() {
     const user = this.currentUser;
@@ -81,20 +73,37 @@ export class Publicacion implements OnInit{
   }
 
   eliminarPublicacion() {
+
     if (this.validarUserPublicacion()) {
-      this.publicacionService.deletePublicacion(this.publicacion._id, this.currentUser._id).subscribe({
-        
-        error: error => {
-          console.error(error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error al eliminar la publicacion',
-            confirmButtonColor: '#d33',
-            background: "#111827",
-            color: "white",
-            width: '400px',
-            padding: '2em'
+      Swal.fire({
+        icon: 'warning',
+        title: 'Estas seguro de eliminar la publicacion?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        background: "#0D0D0D",
+        color: "white",
+        width: '400px',
+        padding: '2em',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.publicacionService.deletePublicacion(this.publicacion._id, this.currentUser._id).subscribe({
+
+            error: error => {
+              console.error(error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al eliminar la publicacion',
+                confirmButtonColor: '#d33',
+                background: "#111827",
+                color: "white",
+                width: '400px',
+                padding: '2em'
+              })
+            }
           })
         }
       })

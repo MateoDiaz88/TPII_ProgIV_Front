@@ -14,14 +14,14 @@ export interface UploadResponse{
 })
 export class UploadService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrlUpload;
+  private apiUrl = environment.apiUrl;
   
   async uploadProfileImage(file:File): Promise<UploadResponse>{
     const formData = new FormData();
     formData.append("image", file);
 
     try{
-      const response = await firstValueFrom(this.http.post<UploadResponse>(`${this.apiUrl}/profile-image`, formData));
+      const response = await firstValueFrom(this.http.post<UploadResponse>(`${this.apiUrl}/upload/profile-image`, formData));
       return response;
     }catch(error){
       console.error("Error al subir la imagen", error);

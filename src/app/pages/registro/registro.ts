@@ -155,13 +155,15 @@ export class Registro implements AfterViewInit {
       const formData = this.registerForm.getRawValue();
       console.log(response);
 
+
       const userData = {
         ...formData,
         imagenPerfil: response.url,
         public_id: response.publicId
       }
 
-      await this.auth.register(userData);
+      const {repetirPassword, ...cleanData} = userData;
+      await this.auth.register(cleanData);
       Swal.fire({
         icon: 'success',
         title: 'Registro exitoso',

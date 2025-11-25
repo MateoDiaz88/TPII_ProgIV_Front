@@ -1,0 +1,68 @@
+<div class="">
+    <app-video-fondo></app-video-fondo>
+
+    <div class="main d-flex flex-column align-items-center" style="min-height: 100vh; width: 100%;">
+
+        <div class="estadisticas-container d-flex flex-column align-items-center m-5 p-4"
+            style="background-color: var(--blanco-opaco); backdrop-filter: blur(5px); width: 60%; border-radius: 20px;">
+
+            <h1 class="text-white mt-3">Estadísticas</h1>
+
+            <div class="formularios w-75 mt-3 mb-4 p-4"
+                style="background-color: var(--gris-oscuro); border: 1px solid var(--gris-medio); border-radius: 20px;">
+
+                <form [formGroup]="statsForm" class="row">
+
+                    <div class="form-group col-6">
+                        <label class="fw-semibold text-secondary">Fecha inicio:</label>
+                        <input type="date" formControlName="start" class="form-control">
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="fw-semibold text-secondary">Fecha fin:</label>
+                        <input type="date" formControlName="end" class="form-control">
+
+                        @if(statsForm.get('end')?.hasError('invalidRange')){
+                        <div class="text-danger small">
+                            La fecha fin debe ser posterior a la fecha inicio
+                        </div>
+                        }
+                    </div>
+
+                </form>
+            </div>
+
+
+            <h3 class="text-white mt-3">Publicaciones por usuario</h3>
+            <button class="btn btn-primary mb-3 btn-stats" [disabled]="statsForm.invalid" (click)="getPublicacionesPorUsuario()">
+                Actualizar gráfico
+            </button>
+
+            <div class="pub-bar d-flex justify-content-center" style="height: 40vh; width: 100%; background-color: var(--gris-oscuro);">
+                <canvas #pubChart baseChart [data]="publicacionesChartData" [type]="'bar'"></canvas>
+            </div>
+
+
+            <h3 class="text-white mt-5">Comentarios por usuario</h3>
+            <button class="btn btn-primary mb-3 btn-stats" [disabled]="statsForm.invalid" (click)="getComentariosPorUsuario()">
+                Actualizar gráfico
+            </button>
+
+            <div class="com-bar d-flex justify-content-center" style="height: 40vh; width: 100%; background-color: var(--gris-oscuro);">
+                <canvas #comChart baseChart [data]="comentariosChartData" [type]="'pie'"></canvas>
+            </div>
+
+
+            <h3 class="text-white mt-5">Comentarios por publicación</h3>
+            <button class="btn btn-primary mb-3 btn-stats" [disabled]="statsForm.invalid"
+                (click)="getComentariosPorPublicacion()">
+                Actualizar gráfico
+            </button>
+
+            <div class="com-pub-bar d-flex justify-content-center" style="height: 40vh; width: 100%; background-color: var(--gris-oscuro);">
+                <canvas #comPubChart baseChart [data]="comentariosPublicacionChartData" [type]="'polarArea'"></canvas>
+            </div>
+
+        </div>
+    </div>
+</div>

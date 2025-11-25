@@ -1,0 +1,182 @@
+<div class="">
+    <app-video-fondo></app-video-fondo>
+    <div class="main d-flex flex-column  align-items-center" style="min-height: 100vh; width: 100%;">
+        <div class="usuarios-container d-flex flex-column align-items-center mt-3">
+            <h2 class="text-white">Usuarios</h2>
+            <div class="usuarios-list overflow-auto d-flex flex-column p-3 max-height-50"
+                style="max-height: 40vh; background-color: var(--blanco-opaco); backdrop-filter: blur(5px); border-radius: 20px;">
+                <table class="table table-striped-columns text-center" style="min-width: 700px;">
+                    <tr class="text-white text-center">
+                        <th>Nombre de usuario</th>
+                        <th>Estado</th>
+                        <th>Rol</th>
+                        <th>Fecha de creacion</th>
+                        <th>Acciones</th>
+                    </tr>
+    
+                    @for(user of usuarios(); track user._id){
+                    <tr class="text-secondary text-center p-3">
+                        <td>{{user.username}}</td>
+                        <td>{{user.habilitado ? 'Habilitado' : 'Deshabilitado'}}</td>
+                        <td>{{user.perfil === 'administrador' ? 'Administrador' : 'Usuario'}}</td>
+                        <td>{{user.createdAt | localeTime}}</td>
+                        <td>
+                            <button (click)="toggleUser(user._id)" class="btn rounded-pill">{{user.habilitado ? 'Deshabilitar' :
+                                'Habilitar'}}</button>
+                        </td>
+                    </tr>
+                    }
+    
+                </table>
+            </div>
+        </div>
+    
+        <div class="registro usuario card mt-5 p-3" style="max-width: 700px; width: 100%; background-color: var(--blanco-opaco); backdrop-filter: blur(5px);">
+            <h3 class="card-title text-center text-white mb-4">Registro de Usuario</h3>
+    
+            <form [formGroup]="registerForm" class="row g-3 m-3" style="border-radius: 20px;">
+                <div class="row">
+                    <!-- Nombre -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Nombre</label>
+                        <input type="text" formControlName="name" class="form-control" placeholder="Nombre">
+                        @if(registerForm.get('name')?.touched && registerForm.get('name')?.invalid){
+                        <div class="text-danger small mt-1">
+                            Ingrese un nombre válido.
+                        </div>
+                        }
+                    </div>
+    
+                    <!-- Apellido -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Apellido</label>
+                        <input type="text" formControlName="surname" class="form-control" placeholder="Apellido">
+                        @if(registerForm.get('surname')?.touched && registerForm.get('surname')?.invalid){
+                        <div class="text-danger small mt-1">
+                            Ingrese un apellido válido.
+                        </div>
+                        }
+                    </div>
+    
+                    <!-- Email -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Email</label>
+                        <input type="email" formControlName="email" class="form-control" placeholder="ejemplo@correo.com">
+                        @if(registerForm.get('email')?.touched && registerForm.get('email')?.invalid){
+                        <div class="text-danger small mt-1">
+                            Ingresa un email válido.
+                        </div>
+                        }
+                    </div>
+    
+                    <!--Username-->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Username</label>
+                        <input type="text" formControlName="username" class="form-control" placeholder="Username">
+                        @if(registerForm.get('username')?.touched && registerForm.get('username')?.invalid){
+                        <div class="text-danger small mt-1">
+                            El username debe tener al menos 8 caracteres y contener una letra mayúscula y un número.
+                            Debe tener como maximo 20 caracteres.
+                        </div>
+                        }
+                    </div>
+    
+                    <!-- Password -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Contraseña</label>
+                        <input type="password" formControlName="password" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
+                        @if(registerForm.get('password')?.touched && registerForm.get('password')?.invalid){
+                        <div class="text-danger small mt-1">
+                            Ingrese una contraseña valida.
+                        </div>
+                        }
+                    </div>
+    
+                    <!-- Confirmar Password -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Confirmar Contraseña</label>
+                        <input type="password" formControlName="repetirPassword" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
+                        @if(registerForm.get('repetirPassword')?.touched &&
+                        registerForm.get('repetirPassword')?.invalid){
+                        @if(registerForm.get('repetirPassword')?.hasError('required')){
+                        <div class="text-danger small">Debe repetir la contraseña.</div>
+                        }
+                        @if(registerForm.get('repetirPassword')?.hasError('passwordMismatch')){
+                        <div class="text-danger small">Las contraseñas no coinciden.</div>
+                        }
+                        }
+                    </div>
+    
+                    <!-- Fecha de nacimiento -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Fecha de nacimiento</label>
+                        <input type="date" formControlName="fechaNacimiento" class="form-control">
+                        @if(registerForm.get('fechaNacimiento')?.touched && registerForm.get('fechaNacimiento')?.invalid){
+                        <div class="text-danger small mt-1">
+                            La fecha de nacimiento es obligatoria.
+                        </div>
+                        }
+                        @if(registerForm.get("fechaNacimiento")?.hasError("minimumAge")){
+                        <div class="text-danger small mt-1">
+                            Debe ser mayor de 16 años.
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Rol de Usuario</label>
+                        <div class="radio-button d-flex flex-column">
+                            <label style="color: var(--gris-claro);">
+                                <input type="radio" formControlName="perfil" value="administrador" class="form-check-input"> Administrador
+                            </label>
+                            <label style="color: var(--gris-claro);">
+                                <input type="radio" formControlName="perfil" value="usuario" class="form-check-input"> Usuario
+                            </label>
+                        </div>
+                    </div>
+    
+                    <!--Descripcio-->
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Descripción</label>
+                        <textarea formControlName="descripcion" rows="4" class="form-control" id="campo-descripcion"
+                            placeholder="Descripción"></textarea>
+                        @if(registerForm.get('descripcion')?.touched && registerForm.get('descripcion')?.invalid){
+                        <div class="text-danger small mt-1">
+                            La descripción debe tener como maximo 500 caracteres.
+                        </div>
+                        }
+                    </div>
+    
+                    <!-- Foto de perfil -->
+                    <div class="col-12 mb-3">
+                        <input type="file" id="fileInput" hidden (change)="onFileSelected($event)">
+                        <label for="fileInput" class="custom-file-upload btn  btn-primary">Subir archivo</label>
+                        @if(!selectedFile){
+                        <div class="text-danger small mt-1">
+                            La foto de perfil es obligatoria.
+                        </div>
+                        }
+                        @if(selectedFile){
+                        <div class="text small mt-1">
+                            Archivo seleccionado: {{selectedFile.name}}
+                        </div>
+                        }
+                    </div>
+                    <!-- Botón -->
+                    <div class="col-12 d-grid mt-3">
+                        <button type="button" [disabled]="registerForm.invalid"
+                            class="btn btn-primary btn-lg shadow-sm btn-register" appDebounceClick [debounceTime]="3000"
+                            (appDebounceClick)="register()">
+                            <i class="fas fa-user-plus me-2"></i> Registrarse
+                        </button>
+                    </div>
+    
+    
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

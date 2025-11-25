@@ -54,7 +54,6 @@ export class Login implements AfterViewInit{
       this.router.navigate(['/publicaciones']);
     } catch (error: any) {
       console.error(error);
-
       let mensaje = "Error al iniciar sesión";
 
       switch(error.status) {
@@ -62,7 +61,7 @@ export class Login implements AfterViewInit{
           mensaje = "Has intentado iniciar sesión demasiadas veces. Por favor, espera 5 minutos antes de volver a intentarlo.";
           break;
         case 401:
-          mensaje = "Credenciales incorrectas. Por favor, verifica tus credenciales.";
+          mensaje = error.error.message || "Usuario no autorizado";
           break;
         default:
           break;

@@ -1,36 +1,105 @@
-<div class="comentarios-cont mb-3">
-    <div class="comentarios-list d-flex flex-column" style="max-height: 300px; overflow: auto;">
-        @for(comentario of comentarios; track comentario){
-            <div class="comentario-cont m-3 p-2">
-                <div class="user-cont d-flex align-items-center gap-2 ">
-                    <img [src]="comentario.autor.imagenPerfil" 
-                         alt="Avatar" 
-                         class="rounded-circle user-avatar"
-                         style="width: 30px; height: 30px; object-fit: cover;">
-                    <p class="mb-0 fw-semibold user-name" style="color: var(--gris-medio);">{{comentario.autor.name}}</p>
+<div class="comentarios-cont d-flex flex-column h-100" style="max-height: 45vh; min-height: 40vh;">
+
+    <div class="comentarios-list flex-grow-1 overflow-auto">
+        @if(cargando()){
+        <div class="comentario-cont m-3 p-2">
+            <div class="content-cont">
+                <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">Cargando...</p>
+            </div>
+        </div>
+        } @else{
+
+        @for(comentario of comentarios(); track comentario){
+        <div class="comentario-cont m-3 p-2">
+            <div class="user-cont d-flex align-items-center gap-2">
+                <img [src]="comentario.autor.imagenPerfil" alt="Avatar" class="rounded-circle user-avatar"
+                    style="width: 30px; height: 30px; object-fit: cover;">
+                <p class="mb-0 fw-semibold user-name" [appHighlightAutor]="comentario.autor._id === publicacion()?.user?._id" style="color: var(--gris-medio);">{{comentario.autor.name}}</p>
+            </div>
+            <div class="content-cont">
+
+                <!--Solo ver-->
+                @if(comentarioEnEdicion() !== comentario._id){
+                <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco); word-wrap: break-word;">
+                    {{comentario.contenido}}
+                </p>
+
+                <button class="btn btn-sm mt-2" (click)="activarEdicion(comentario)" >
+                    <img src="assets/img/editar.png" alt="" style="width: 20px; ">
+                </button>
+                }
+
+
+                <!--En edicion-->
+                @if(comentarioEnEdicion() === comentario._id){
+                <input type="text" class="form-control mt-2" [(ngModel)]="contenidoEditado" />
+
+                <div class="d-flex gap-2 mt-2">
+                    <button class="btn btn-success btn-sm" (click)="actualizarComentario(comentario)">
+                        Actualizar
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" (click)="cancelarEdicion()">
+                        Cancelar
+                    </button>
+
                 </div>
-                <div class="content-cont">
-                    <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">{{comentario.contenido}}</p>
-                </div>
+                }
+            </div>
+
+            <div class="footer d-flex justify-content-between">
+
                 <div class="date-cont">
                     <small class="post-date text-secondary">{{comentario.fechaPublicacion | timeAgo}}</small>
                 </div>
-            </div>   
-        }
-        @if(comentarios.length == 0){
-            <div class="comentario-cont m-3 p-2">
-                <div class="content-cont">
-                    <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">No hay comentarios.</p>
+                @if(comentario.editado){
+
+                <div class="has-edited text-secondary">
+                    <small>editado</small>
                 </div>
-            </div>   
+                }
+            </div>
+
+
+
+        </div>
+        }
+
+        @if(hayMas()){
+        <div class="loadMore-cont d-flex justify-content-center mb-2">
+            <button class="btn rounded-pill" id="btn-loadMore" (click)="cargarMas()">Cargar más</button>
+        </div>
+        }
+        }
+
+        @if(comentarios().length == 0 && !cargando()){
+        <div class="comentario-cont m-3 p-2">
+            <div class="content-cont">
+                <p class="mb-0 publicacion-texto mt-2" style="color: var(--blanco);">No hay comentarios.</p>
+            </div>
+        </div>
         }
 
     </div>
 
-    <div class="input-comentario d-flex gap-2 p-3 justify-content-center">
-        <input [(ngModel)]="nuevoMensaje" class="form-control" type="text" placeholder="Escribe un comentario..." (keyup.enter)="agregarComentario()">
-        <button class="btn-enviar btn interaction-btn rounded-pill" (click)="agregarComentario()">
-            <img src="assets/img/enviar.png" alt="" style="width: 30px; height: 30px;">
-        </button>
+
+    <!-- Input de comentario - fixed al fondo -->
+    <div class="input-comentario flex-shrink-0 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+        <form [formGroup]="commentsForm" class="d-flex flex-column p-3 justify-content-center">
+            <div class="col-12 d-flex gap-2">
+                <input formControlName="contenido" class="form-control" maxlength="300" type="text"
+                    placeholder="Escribe un comentario...">
+                <button class="btn-enviar btn interaction-btn rounded-pill" (click)="agregarComentario()"
+                    [disabled]="!commentsForm.valid">
+                    <img src="assets/img/enviar.png" alt="" style="width: 30px; height: 30px;">
+                </button>
+            </div>
+
+            @if(commentsForm.get('contenido')?.touched && commentsForm.get('contenido')?.invalid){
+            <div class="text-danger small mt-2 d-flex align-items-center gap-2">
+                <span>El comentario debe tener como máximo 300 caracteres.</span>
+            </div>
+            }
+        </form>
     </div>
 </div>

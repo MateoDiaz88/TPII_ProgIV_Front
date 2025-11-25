@@ -1,0 +1,51 @@
+.form-control{
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--gris-claro);
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control::placeholder{
+    color: var(--gris-claro);
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus::placeholder{
+    color: var(--violeta-principal);
+}
+.form-control:focus{
+    border-color: var(--violeta-principal);
+    box-shadow: none;
+    color: var(--violeta-principal);
+}
+#campo-descripcion{
+    border: 1px solid var(--gris-claro);
+}
+.btn-register{
+    background-color: var(--violeta-principal);
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+.btn-register:active{
+    transform: scale(1.1);
+    background-color: var(--violeta-principal);
+}
+
+
+.link-login{
+    color: var(--violeta-principal);    
+    text-decoration: none;
+}
+
+.custom-file-upload{
+    background-color: var(--violeta-principal);
+    border: none;
+}
+
+.form-check-input:checked{
+    background-color: var(--violeta-principal);
+    border-color: var(--violeta-principal);
+    box-shadow: none;
+}

@@ -30,7 +30,17 @@
         </li>
         }
 
-        
+        <!--
+          <li class="nav-item" *appShowIf="currentUser().perfil === 'administrador'">
+          <a class="nav-link retro-font " routerLink="/dashboard/estadisticas">Estadísticas</a>
+          </li>
+          <li class="nav-item" *appShowIf="currentUser().perfil === 'administrador'">
+            <a class="nav-link retro-font" routerLink="/dashboard/usuarios">Usuarios</a>
+          </li>
+        -->
+
+
+
         <li class="nav-item">
           <a class="nav-link retro-font" routerLink="/publicaciones">Feed</a>
         </li>
@@ -41,15 +51,15 @@
 
         <li class="nav-item">
           <a class="nav-link retro-font" routerLink="/mi-perfil">
-            
+
             <img [src]="currentUser().imagenPerfil" alt="" class="rounded-circle" style="width: 45px;">
           </a>
         </li>
         } @else {
-          <li class="nav-item">
-            <a class="nav-link retro-font " routerLink="/mi-perfil">MiPerfil</a>
-          </li>
-          
+        <li class="nav-item">
+          <a class="nav-link retro-font " routerLink="/mi-perfil">MiPerfil</a>
+        </li>
+
         }
 
 

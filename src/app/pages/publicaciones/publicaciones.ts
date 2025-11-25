@@ -78,6 +78,7 @@ export class Publicaciones implements AfterViewInit, OnInit {
 
 
   publicacionForm = this.fb.group({
+    titulo: ['', [Validators.maxLength(100)]],
     contenido: ['', [Validators.maxLength(1000)]],
   });
 
@@ -185,7 +186,8 @@ export class Publicaciones implements AfterViewInit, OnInit {
 
   async crearPublicacion() {
     const contenido = this.publicacionForm.getRawValue().contenido;
-    if (!contenido && !this.selectedFile) {
+    const titulo = this.publicacionForm.getRawValue().titulo;
+    if (!contenido && !this.selectedFile && !titulo) {
       Swal.fire({
         icon: 'warning',
         title: 'Publicación vacía',
@@ -201,7 +203,11 @@ export class Publicaciones implements AfterViewInit, OnInit {
     try {
       const formData = new FormData();
 
-      formData.append("userId", this.currentUser()._id);
+      if (!titulo) {
+        formData.append("titulo", "");
+      } else {
+        formData.append("titulo", titulo);
+      }
 
       if (!contenido) {
         formData.append("contenido", "");

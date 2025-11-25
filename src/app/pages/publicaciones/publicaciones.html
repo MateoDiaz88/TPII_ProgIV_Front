@@ -13,16 +13,31 @@
 
                         <div class="card-body p-4">
                             <form [formGroup]="publicacionForm">
-                                <!-- Textarea -->
                                 <div class="mb-3">
+                                    <label class="form-label fw-semibold">Titulo</label>
+                                    <input type="text" formControlName="titulo" class="form-control" placeholder="Titulo" id="titulo-input">
+                                    @if (publicacionForm.get('titulo')?.touched &&
+                                    publicacionForm.get('titulo')?.invalid) {
+                                    <div class="text-danger small mt-1">
+                                        Ingrese un titulo valido. Maximo 100 caracteres
+                                    </div>
+                                    }
+                                </div>
+                                <!-- Textarea -->
+                                <div class="mb-3 position-relative">
                                     <label class="form-label fw-semibold">¿Qué estás pensando?</label>
+
                                     <textarea formControlName="contenido" class="form-control custom-textarea"
                                         placeholder="Comparte algo interesante..." rows="4"></textarea>
-                                    @if(publicacionForm.get('contenido')?.touched &&
-                                    publicacionForm.get('contenido')?.invalid){
+
+                                    <p id="length-publicacion">
+                                        {{ publicacionForm.get('contenido')?.value?.length || 0 }}/1000
+                                    </p>
+
+                                    @if (publicacionForm.get('contenido')?.touched &&
+                                    publicacionForm.get('contenido')?.invalid) {
                                     <div class="text-danger small mt-2 d-flex align-items-center gap-2">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        <span>Ingrese una publicación válida.</span>
+                                        <span>La publicación debe tener como máximo 1000 caracteres</span>
                                     </div>
                                     }
                                 </div>
@@ -115,7 +130,7 @@
                     }
                     @else{
                     <div class="d-flex flex-column gap-3 publicaciones-list">
-                        @for(publicacion of publicaciones(); track publicacion){
+                        @for(publicacion of publicaciones(); track publicacion._id){
                         <app-publicacion [publicacion]="publicacion"></app-publicacion>
                         }
                     </div>

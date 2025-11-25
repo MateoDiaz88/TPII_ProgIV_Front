@@ -1,41 +1,25 @@
 import { Injectable, signal } from '@angular/core';
-import { User } from '../auth-service/auth-service';
+import { User } from '../usuarios-service/usuarios-service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Observable, single, tap } from 'rxjs';
 import { environment } from '../../../enviroments/enviroment';
-import { off } from 'node:process';
 
 export interface Publicacion {
   _id: string,
   user: User,
   contenido: string,
+  titulo: string,
   imagenPublicacion?: string,
   fechaPublicacion: string,
   likes: string[],
-  comentarios: Comentario[]
 }
 
-export interface ComentarioDTO {
-  contenido: string;
-  fechaPublicacion: string;
-  autor: string;
-}
 
-export interface Comentario {
-  _id?: string;
-  contenido: string;
-  fechaPublicacion: string;
-  autor: {
-    _id: string;
-    name: string;
-    surname: string;
-    username: string;
-    imagenPerfil: string;
-  };
-}
+
 
 export interface PublicacionData {
+  titulo?: string,
   contenido?: string,
   imagen?: File,
   fechaPublicacion?: string,
@@ -46,16 +30,13 @@ export interface PublicacionData {
   providedIn: 'root'
 })
 export class PublicacionService {
-  apiUrl = environment.apiUrlPosts;
+  apiUrl = environment.apiUrl;
   publicaciones = signal<Publicacion[]>([]);
+  publicacion = signal<Publicacion |null>(null);
   cargando = signal<boolean>(false);
   hayMas = signal<boolean>(false);
   constructor(private http: HttpClient) { }
-  cargarPublicaciones(orden: string = "fecha", offset: number = 0, limit: number = 5, userId?: string | null) {
-
-
-
-
+   cargarPublicaciones(orden: string = "fecha", offset: number = 0, limit: number = 5, userId?: string | null) {
     this.cargando.set(true);
     let params = new HttpParams()
       .set("orden", orden)
@@ -66,7 +47,9 @@ export class PublicacionService {
       params = params.set("userId", userId);
     }
 
-    this.http.get<{ total: number, publicaciones: Publicacion[], paginaActual: number, totalPaginas: number }>(this.apiUrl, { params }).subscribe({
+    console.log(params)
+
+    this.http.get<{ total: number, publicaciones: Publicacion[], paginaActual: number, totalPaginas: number }>(`${this.apiUrl}/publicaciones`, { params}).subscribe({
       next: (res) => {
         const { publicaciones, total } = res;
 
@@ -80,12 +63,11 @@ export class PublicacionService {
         */
 
 
-
         this.publicaciones.set(publicaciones);
-
 
         const hayMas = offset + publicaciones.length < total;
         this.hayMas.set(hayMas);
+
         this.cargando.set(false);
       },
       error: error => {
@@ -112,7 +94,7 @@ export class PublicacionService {
   }
 
   crearPublicacion(publicacion: FormData, offset: number) {
-    this.http.post<Publicacion>(`${this.apiUrl}/create`, publicacion).subscribe({
+    this.http.post<Publicacion>(`${this.apiUrl}/publicaciones/create`, publicacion, { withCredentials: true }).subscribe({
       next: (publicacion) => {
         // Si está en la primera página, la agregamos
         if (offset === 0) {
@@ -161,17 +143,21 @@ export class PublicacionService {
 
   // publicacion-service.ts - MODIFICAR
   toggleLike(publicacionId: string, userId: string): Observable<Publicacion> {
-    return this.http.post<Publicacion>(`${this.apiUrl}/${publicacionId}/like`, { userId });
-  }
-
-  addComentario(publicacionId: string, comentario: ComentarioDTO): Observable<Comentario> {
-    return this.http.post<Comentario>(`${this.apiUrl}/${publicacionId}/comentario`, comentario);
+    return this.http.post<Publicacion>(`${this.apiUrl}/publicaciones/${publicacionId}/like`, { userId });
   }
 
   deletePublicacion(publicacionId: string, userId: string) {
-    return this.http.delete<void>(`${this.apiUrl}/${publicacionId}`, { params: { userId } }).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/publicaciones/${publicacionId}`, { params: { userId } }).pipe(
       tap(() => {
         this.publicaciones.update(prev => prev.filter(pub => pub._id !== publicacionId));
+      })
+    );
+  }
+
+  buscarPublicacion(publicacionId: string) {
+    return this.http.get<Publicacion>(`${this.apiUrl}/publicaciones/${publicacionId}`).pipe(
+      tap((publicacion) => {
+        this.publicacion.set(publicacion);
       })
     );
   }

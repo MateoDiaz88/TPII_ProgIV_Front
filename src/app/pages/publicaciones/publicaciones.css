@@ -1,4 +1,7 @@
-.publicaciones-container , button, input, textarea{
+.publicaciones-container,
+button,
+input,
+textarea {
     position: relative;
     font-family: "Poppins", sans-serif;
     border-radius: 20px;
@@ -7,74 +10,85 @@
 }
 
 
-.post-form-card{
+.post-form-card {
     background: var(--blanco-opaco);
     backdrop-filter: blur(5px);
     border-radius: 20px;
     color: white;
-    
+
 }
 
-.custom-textarea{
+.custom-textarea {
     border: 2px solid var(--gris-medio);
     background-color: transparent;
     transition: all 0.2s ease-in-out;
     color: var(--blanco);
     font-weight: bold;
+    width: 100%;
+    resize: vertical;
 }
 
-.custom-textarea:focus{
+.custom-textarea:focus {
     border: 2px solid var(--violeta-principal);
     box-shadow: none;
     color: var(--violeta-principal);
 }
 
-.custom-textarea::placeholder{
+.custom-textarea::placeholder {
     color: var(--gris-claro);
     transition: all 0.2s ease-in-out;
 }
 
-.custom-textarea:focus::placeholder{
+.custom-textarea:focus::placeholder {
     color: var(--violeta-principal);
 }
 
-.btn-upload{
+#length-publicacion {
+    text-align: right;
+    margin-top: 4px;
+    margin-right: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--gris-claro);
+}
+
+.btn-upload {
 
     border-color: var(--blanco);
     color: var(--violeta-principal);
     transition: all 0.2s ease-in-out;
-    border-radius:15px;
+    border-radius: 15px;
 }
 
-.btn-upload:hover{
+.btn-upload:hover {
     background-color: var(--violeta-principal);
     border: none;
     color: white;
     transform: scale(1.1);
 }
 
-.btn-upload:active{
+.btn-upload:active {
     transform: scale(0.9);
     border-color: var(--violeta-principal);
     background-color: var(--violeta-hover);
 }
 
-.btn-publish{
+.btn-publish {
     background-color: var(--violeta-principal);
     border: none;
     color: var(--blanco);
     transition: all 0.2s ease-in-out;
-    border-radius:15px;
+    border-radius: 15px;
 }
 
-.btn-publish:hover{
+.btn-publish:hover {
     background-color: transparent;
     border: 1px solid var(--blanco);
     color: var(--blanco);
     transform: scale(1.1);
 }
 
-#btn-borrar-imagen{
+#btn-borrar-imagen {
     background-color: var(--opaco);
     border-color: var(--blanco);
     color: white;
@@ -82,14 +96,14 @@
     transition: all 0.2s ease-in-out;
 }
 
-#btn-borrar-imagen:hover{
+#btn-borrar-imagen:hover {
     background-color: var(--violeta-principal);
     border: none;
     color: white;
     transform: scale(1.1);
 }
 
-#btn-borrar-imagen:active{
+#btn-borrar-imagen:active {
     transform: scale(0.9);
     border-color: var(--violeta-principal);
     background-color: var(--violeta-hover);
@@ -112,12 +126,36 @@
 .empty-state p {
     color: #888;
 }
-.select-order{
+
+.select-order {
     box-shadow: none;
 }
 
 
-.boton-paginacion{
+.boton-paginacion {
     transition: all 0.2s ease-in-out;
     margin: 0;
+}
+
+#titulo-input{
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--gris-claro);
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+#titulo-input::placeholder{
+    color: var(--gris-claro);
+    transition: all 0.2s ease-in-out;
+}
+
+#titulo-input:focus::placeholder{
+    color: var(--violeta-principal);
+}
+#titulo-input:focus{
+    border-color: var(--violeta-principal);
+    box-shadow: none;
+    color: var(--violeta-principal);
 }
