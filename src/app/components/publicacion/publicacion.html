@@ -60,7 +60,7 @@
 
                     @if(publicacion.user._id === currentUser._id || currentUser.perfil === 'administrador'){
                         <div class="delete-button">
-                            <button class="btn interaction-btn rounded-pill p-2 px-3" (click)="eliminarPublicacion()">
+                            <button class="btn interaction-btn rounded-pill p-2 px-3" (click)="eliminarPublicacion($event)">
                                 <img src="assets/img/eliminar.png" alt="" style="width: 20px; height: 20px;">
                             </button>
                         </div>

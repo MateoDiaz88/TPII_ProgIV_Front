@@ -73,8 +73,8 @@ export class Publicacion implements OnInit {
     return user._id === ownerId || user.perfil === "administrador";
   }
 
-  eliminarPublicacion() {
-
+  eliminarPublicacion(event: Event) {
+    event.stopPropagation();
     if (this.validarUserPublicacion()) {
       Swal.fire({
         icon: 'warning',
