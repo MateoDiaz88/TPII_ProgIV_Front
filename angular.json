@@ -16,7 +16,9 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/icons"
             ],
             "styles": [
               "src/styles.css",
@@ -29,7 +31,6 @@
           },
           "configurations": {
             "production": {
-              
               "budgets": [
                 {
                   "type": "initial",
@@ -43,12 +44,13 @@
                 }
               ],
               "outputHashing": "all",
-              "fileReplacements": [{
-                "replace": "src/enviroments/enviroment.ts",
-                "with": "src/enviroments/enviroment.prod.ts"
-              }
-            ],
-            "serviceWorker": false
+              "fileReplacements": [
+                {
+                  "replace": "src/enviroments/enviroment.ts",
+                  "with": "src/enviroments/enviroment.prod.ts"
+                }
+              ],
+              "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,
