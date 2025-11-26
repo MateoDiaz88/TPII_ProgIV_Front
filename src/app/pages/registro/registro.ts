@@ -176,7 +176,7 @@ export class Registro implements AfterViewInit {
       });
       this.router.navigate(['/login']);
 
-
+      
     } catch (error: any) {
       console.error("Error en registro");
 

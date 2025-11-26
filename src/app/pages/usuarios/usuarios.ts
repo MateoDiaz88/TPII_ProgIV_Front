@@ -192,7 +192,7 @@ export class Usuarios implements OnInit {
         padding: '2em'
       });
 
-
+      this.registerForm.reset();
     } catch (error: any) {
       console.error("Error en registro");
 
